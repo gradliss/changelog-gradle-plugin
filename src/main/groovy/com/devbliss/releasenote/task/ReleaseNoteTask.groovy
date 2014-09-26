@@ -11,73 +11,78 @@ import org.gradle.api.tasks.TaskAction
 class ReleaseNoteTask extends DefaultTask{
 
   def filename
+  def newLine = System.getProperty("line.separator");
 
   @TaskAction
   public void run() {
-    String newLine = System.getProperty("line.separator");
+    def releaseVersion
+    def snapshotVersion
+    def branch = Information.getGitBranch()
+    def userName = Information.getGitUsername()
+    def email = Information.getGitEmail()
+    def today = new Date()
+    //Find version number (0.0.1) only with 2 dots
+    //def regex = /((\d)+\.){2}(\d)+/
+    //Find version number (0.0.1.0.1.1) up to 5 dots
+    def regex = /((\d)+(\.\d+){0,5}(\.\*)?)/
 
-    if(getFilename() != null){
-      println "\033[31m Try to read changelog with name: \033[37m" + getFilename()
-      def changelog = new File(getFilename())
+    //Check if filename is defined in build.gradle
+    if(getFilename() == null){
+      Information.fileNameIsNotDefined()
+      return
+    }
 
-      if(changelog.exists()) {
-        println "\033[31m Successfully read existing changelog: "
-        println ""
-        println "\033[37m" + changelog.text
-        println ""
-      }else{
-        println "\033[31m Changelog doesnt exist! New one would be created!"
-        boolean success = new File(getFilename()).createNewFile()
-        if(success){
-          println "\033[31m File created: \033[37m" + getFilename()
-        }
-      }
+    //Read file and show existing changelog
+    //if no changelog file exist new one would created
+    def changelogFile = Information.readFilenAndShow(getFilename())
 
-      println "\033[1;31m -- Now write to your changelog -- \033[22m"
+    println "\033[1;31m -- Now write to your changelog -- \033[22m"
 
-      def version
-      def versionQuestion = System.console().readLine newLine + '\033[31m Is this a new Version? (y/n): \033[37m'
+    def isNewRelease = System.console().readLine newLine + "\033[31m Is this a new release Version? (y/n): \033[37m"
 
-      if(versionQuestion == "y") {
-        version = System.console().readLine '\033[31m Version: \033[37m'
-      }
-
-      def branch = Information.getGitBranch()
-      def userName = Information.getGitUsername()
-      def email = Information.getGitEmail()
-      def today = new Date()
-
-      //Remove line breaks
-      def changes = "Last change from: $userName $email $today"
-      changes = changes.replace("\r", "").replace("\n", "")
-
-      def change = System.console().readLine "\033[31m Change:\033[37m [$branch] "
-      def changeIsOk = System.console().readLine '\033[31m Is everything ok? (y/n): \033[37m'
-
-      if(changeIsOk == "y") {
-        def temp = changelog.text
-        changelog.delete()
-        changelog = new File(getFilename())
-        changelog << newLine
-        changelog << "### Version " + version
-        changelog << newLine + "- [$branch] " + change
-        changelog << newLine + "---" + newLine
-        changelog << changes + newLine
-        changelog << temp
-      }else if (changeIsOk == "n"){
-        println "ReRun releasenote setup"
-        run()
-      }else{
-        println ""
-        println "\033[1;31m -- Changelog not written -- \033[22;31m"
-      }
+    if(isNewRelease == "y") {
+      releaseVersion = System.console().readLine '\033[31m Version: \033[37m'
+    }else if (isNewRelease == "n"){
+      println "\33[31m New snapshot version created"
+      def changelogToString = changelogFile.text
+      def versionNumber = changelogToString.find(regex)
+      snapshotVersion = versionNumber + "-SNAPSHOT-" + new Date().time
     }else{
-      println "\033[31m Please define a filename for changelog creation."
-      println " The gradle task configuration looks like:"
-      println ""
-      println "\033[1;37m releaseNote {"
-      println "\033[1;37m   filename = 'changelog.md'"
-      println "\033[1;37m }"
+      println "SOMETHING GOES WRONG STOP PLUGIN"
+      return
+    }
+
+    //Remove line breaks
+    def changes = "Last change from: $userName $email $today"
+    changes = changes.replace("\r", "").replace("\n", "")
+
+    //Ask user is everything ok
+    def change = System.console().readLine "\033[31m Change:\033[37m [$branch] "
+    def changeIsOk = System.console().readLine "\033[31m Is everything ok? (y/n): \033[37m"
+
+    if(changeIsOk == "y") {
+      def temp = changelogFile.text
+      if(isNewRelease == "y") {
+        changelogFile.delete()
+        changelogFile = new File(getFilename())
+        changelogFile << newLine
+        changelogFile << "### Version " + releaseVersion
+        changelogFile << newLine + "- [$branch] " + change
+        changelogFile << newLine + "---" + newLine
+        changelogFile << changes + newLine
+        changelogFile << temp
+      }else if (isNewRelease == "n"){
+        def tmp = changelogFile.text
+        def changeVersionToSnapshot = tmp.replaceFirst(regex, snapshotVersion)
+        changelogFile.delete()
+        changelogFile = new File(getFilename())
+        changelogFile << changeVersionToSnapshot
+      }
+    }else if (changeIsOk == "n"){
+      println "\033[31m Ok you have a second chance."
+      run()
+    }else{
+      Information.changelogNotWritten()
     }
   }
 }
