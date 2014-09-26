@@ -1,4 +1,9 @@
-package com.devbliss.releasenote.task
+package com.devbliss.changelog.task
+
+/**
+ * @author Christian Soth <christian.soth@devbliss.com>
+ *
+ */
 
 class Information {
 

@@ -1,4 +1,9 @@
-package com.devbliss.releasenote.task
+package com.devbliss.changelog.task
+
+/**
+ * @author Christian Soth <christian.soth@devbliss.com>
+ *
+ */
 
 class Cmd {
   public static final RED = "\033[31m"

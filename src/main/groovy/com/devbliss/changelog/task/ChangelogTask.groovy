@@ -1,4 +1,4 @@
-package com.devbliss.releasenote.task
+package com.devbliss.changelog.task
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -8,7 +8,7 @@ import org.gradle.api.tasks.TaskAction
  *
  */
 
-class ReleaseNoteTask extends DefaultTask{
+class ChangelogTask extends DefaultTask{
 
   def filename
 
@@ -23,11 +23,10 @@ class ReleaseNoteTask extends DefaultTask{
     def today = new Date()
 
     //get only vertsion number
-    //    def regexVersion1 = /(\d)+(\.\d)+(\d+)/
     def regexVersion1 = /(\d)*(\.\d*).*/
     //get version with snap and replace
     def regexVersion = /(\d)*(\.\d*)+(-).*/
-    //    def regexText = /(- \[(.*?)\])(.*?)(\d+).*/
+    //get change text and replace
     def regexText = /(- \[(.*)\])(.*?).*/
     def regexChange = /\bLast change from:(.*?)(\d+).*/
 

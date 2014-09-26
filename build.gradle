@@ -3,7 +3,7 @@ apply plugin: 'maven'
 
 sourceCompatibility = '1.8'
 
-group = 'com.devbliss.releasenote'
+group = 'com.devbliss.changelog'
 version = '0.1.0'
 
 repositories {
