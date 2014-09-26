@@ -1,4 +1,4 @@
-package com.devbliss.releasenote.task
+package com.devbliss.changelog.task
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -8,10 +8,10 @@ import org.gradle.api.tasks.TaskAction
  *
  */
 
-class ReleaseNoteTask extends DefaultTask{
+class ChangelogTask extends DefaultTask{
 
   def filename
-  def newLine = System.getProperty("line.separator");
+
 
   @TaskAction
   public void run() {
@@ -21,10 +21,14 @@ class ReleaseNoteTask extends DefaultTask{
     def userName = Information.getGitUsername()
     def email = Information.getGitEmail()
     def today = new Date()
-    //Find version number (0.0.1) only with 2 dots
-    //def regex = /((\d)+\.){2}(\d)+/
-    //Find version number (0.0.1.0.1.1) up to 5 dots
-    def regex = /((\d)+(\.\d+){0,5}(\.\*)?)/
+
+    //get only vertsion number
+    def regexVersion1 = /(\d)*(\.\d*).*/
+    //get version with snap and replace
+    def regexVersion = /(\d)*(\.\d*)+(-).*/
+    //get change text and replace
+    def regexText = /(- \[(.*)\])(.*?).*/
+    def regexChange = /\bLast change from:(.*?)(\d+).*/
 
     //Check if filename is defined in build.gradle
     if(getFilename() == null){
@@ -38,14 +42,14 @@ class ReleaseNoteTask extends DefaultTask{
 
     println "\033[1;31m -- Now write to your changelog -- \033[22m"
 
-    def isNewRelease = System.console().readLine newLine + "\033[31m Is this a new release Version? (y/n): \033[37m"
+    def isNewRelease = System.console().readLine Cmd.NEWLINE + "\033[31m Is this a new release Version? (y/n): \033[37m"
 
     if(isNewRelease == "y") {
       releaseVersion = System.console().readLine '\033[31m Version: \033[37m'
     }else if (isNewRelease == "n"){
       println "\33[31m New snapshot version created"
       def changelogToString = changelogFile.text
-      def versionNumber = changelogToString.find(regex)
+      def versionNumber = changelogToString.find(regexVersion1)
       snapshotVersion = versionNumber + "-SNAPSHOT-" + new Date().time
     }else{
       println "SOMETHING GOES WRONG STOP PLUGIN"
@@ -53,8 +57,8 @@ class ReleaseNoteTask extends DefaultTask{
     }
 
     //Remove line breaks
-    def changes = "Last change from: $userName $email $today"
-    changes = changes.replace("\r", "").replace("\n", "")
+    def changeFrom = "Last change from: $userName $email $today"
+    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
 
     //Ask user is everything ok
     def change = System.console().readLine "\033[31m Change:\033[37m [$branch] "
@@ -65,21 +69,28 @@ class ReleaseNoteTask extends DefaultTask{
       if(isNewRelease == "y") {
         changelogFile.delete()
         changelogFile = new File(getFilename())
-        changelogFile << newLine
+        changelogFile << Cmd.NEWLINE
         changelogFile << "### Version " + releaseVersion
-        changelogFile << newLine + "- [$branch] " + change
-        changelogFile << newLine + "---" + newLine
-        changelogFile << changes + newLine
+        changelogFile << Cmd.NEWLINE + "- [$branch] " + change + Cmd.NEWLINE
+        changelogFile << "---" + Cmd.NEWLINE
+        changelogFile << changeFrom + Cmd.NEWLINE
         changelogFile << temp
       }else if (isNewRelease == "n"){
         def tmp = changelogFile.text
-        def changeVersionToSnapshot = tmp.replaceFirst(regex, snapshotVersion)
+        println "-->" + snapshotVersion
+
+        tmp = tmp.replaceFirst(regexVersion1, snapshotVersion)
+        tmp = tmp.replaceFirst(regexVersion, snapshotVersion)
+        def oldChanges = tmp.find(regexText)
+        def newstuff = "- [$branch] " + change + Cmd.NEWLINE + oldChanges + Cmd.NEWLINE
+        tmp = tmp.replaceFirst(regexText, newstuff)
+        tmp = tmp.replaceFirst(regexChange, changeFrom)
         changelogFile.delete()
         changelogFile = new File(getFilename())
-        changelogFile << changeVersionToSnapshot
+        changelogFile << tmp
       }
     }else if (changeIsOk == "n"){
-      println "\033[31m Ok you have a second chance."
+      Information.secondChance()
       run()
     }else{
       Information.changelogNotWritten()

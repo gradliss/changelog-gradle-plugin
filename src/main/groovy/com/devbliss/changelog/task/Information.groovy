@@ -1,4 +1,9 @@
-package com.devbliss.releasenote.task
+package com.devbliss.changelog.task
+
+/**
+ * @author Christian Soth <christian.soth@devbliss.com>
+ *
+ */
 
 class Information {
 
@@ -55,5 +60,11 @@ class Information {
       }
     }
     return changelog
+  }
+
+  def static secondChance(){
+    println Cmd.NEWLINE
+    println "\033[1,31m -!- Ok you have a second chance -!- \033[22m"
+    println Cmd.NEWLINE
   }
 }
