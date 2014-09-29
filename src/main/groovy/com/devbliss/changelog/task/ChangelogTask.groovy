@@ -37,17 +37,10 @@ class ChangelogTask extends DefaultTask{
     println "\033[1;31m -- Now write to your changelog -- \033[22m"
 
     //Loop so long until the input is "y" or "n"
-    def i = 0
     while(loopInput){
-      i++
       isNewRelease = System.console().readLine Utility.NEWLINE + "\033[31m Is this a new release Version? (y/n): \033[37m"
       if(isNewRelease == "y" || isNewRelease == "n"){
         loopInput = false
-      }
-      if(i == 3){
-        println Utility.NEWLINE
-        println Utility.WHITE_BOLD + "!!! Go Home, You're Drunk. !!!" + Utility.NORMAL
-        println Utility.NEWLINE
       }
     }
 
