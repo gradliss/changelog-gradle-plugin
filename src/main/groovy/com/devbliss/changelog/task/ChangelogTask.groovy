@@ -21,7 +21,8 @@ class ChangelogTask extends DefaultTask{
     def userName = Information.getGitUsername()
     def email = Information.getGitEmail()
     def today = new Date()
-
+    def loopInput = true
+    def isNewRelease
 
     //Check if filename is defined in build.gradle
     if (getFilename() == null){
@@ -35,7 +36,13 @@ class ChangelogTask extends DefaultTask{
 
     println Utility.RED_BOLD + " -- Now write to your changelog -- " + Utility.NORMAL
 
-    def isNewRelease = System.console().readLine Utility.NEWLINE + Utility.RED + " Is this a new release Version? (y/n): " + Utility.WHITE
+    //Loop so long until the input is "y" or "n"
+    while(loopInput){
+      isNewRelease = System.console().readLine Utility.NEWLINE + Utility.RED + " Is this a new release Version? (y/n): " + Utility.WHITE
+      if(isNewRelease == "y" || isNewRelease == "n"){
+        loopInput = false
+      }
+    }
 
     if (isNewRelease == "y") {
       releaseVersion = System.console().readLine Utility.RED + ' Version: ' + Utility.WHITE
