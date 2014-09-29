@@ -18,4 +18,14 @@ dependencies {
   testCompile "junit:junit:4.+"
 }
 
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "http://nexus.devbliss.com/content/repositories/releases/") {
+        authentication(userName: "deployment", password: "deployment")
+      }
+    }
+  }
+}
+
 task wrapper(type: Wrapper) { gradleVersion = 2.1  }

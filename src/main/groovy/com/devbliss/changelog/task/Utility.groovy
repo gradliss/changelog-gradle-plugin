@@ -5,7 +5,8 @@ package com.devbliss.changelog.task
  *
  */
 
-class Cmd {
+class Utility {
+  //Some static color's for cmd
   public static final RED = "\033[31m"
   public static final RED_BOLD = "\033[1;31m"
 
@@ -15,4 +16,10 @@ class Cmd {
   public static final NORMAL = "\033[22m" //remove bold
 
   public static final NEWLINE = System.getProperty("line.separator")
+
+  //Regex for changelog manipulation
+  public static final regexVersionWithoutSuffix = /(\d)*(\.\d*).*/
+  public static final regexVersionWithSuffix = /(\d)*(\.\d*)+(-).*/
+  public static final regexText = /(- \[(.*)\])(.*?).*/
+  public static final regexChangeNameDate = /\bLast change from:(.*?)(\d+).*/
 }
