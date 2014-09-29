@@ -30,33 +30,33 @@ class Information {
   }
 
   def static fileNameIsNotDefined(){
-    println "\033[31m Please define a filename for changelog creation."
+    println Utility.RED + " Please define a filename for changelog creation."
     println " The gradle task configuration looks like:"
     println ""
-    println "\033[1;37m changelog {"
-    println "\033[1;37m   filename = 'changelog.md'"
-    println "\033[1;37m }"
+    println Utility.WHITE_BOLD + " changelog {"
+    println Utility.WHITE_BOLD + "   filename = 'changelog.md'"
+    println Utility.WHITE_BOLD + " }"
   }
 
   def static changelogNotWritten(){
     println ""
-    println "\033[1;31m -- Changelog not written -- \033[22;31m"
+    println Utility.RED_BOLD + " -- Changelog not written -- " + Utility.NORMAL
   }
 
   def static readFilenAndShow(def changelogFile){
-    println "\033[31m Try to read changelog with name: \033[37m" + changelogFile
+    println Utility.RED + " Try to read changelog with name: " + Utility.WHITE + changelogFile
     def changelog = new File(changelogFile)
 
-    if(changelog.exists()) {
-      println "\033[31m Successfully read existing changelog: "
+    if (changelog.exists()) {
+      println Utility.RED + " Successfully read existing changelog: "
       println ""
-      println "\033[37m" + changelog.text
+      println Utility.WHITE + "" + changelog.text
       println ""
-    }else{
-      println "\033[31m Changelog doesnt exist! New one would be created!"
+    } else {
+      println Utility.RED + " Changelog doesnt exist! New one would be created!"
       boolean success = new File(changelogFile).createNewFile()
-      if(success){
-        println "\033[31m File created: \033[37m" + changelogFile
+      if (success) {
+        println Utility.RED + " File created: " + Utility.WHITE + changelogFile
       }
     }
     return changelog
@@ -64,7 +64,7 @@ class Information {
 
   def static secondChance(){
     println Utility.NEWLINE
-    println "\033[1,31m -!- Ok you have a second chance -!- \033[22m"
+    println Utility.RED_BOLD + " -!- Ok you have a second chance -!- " + Utility.NORMAL
     println Utility.NEWLINE
   }
 }

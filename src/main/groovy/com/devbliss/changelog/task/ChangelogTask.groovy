@@ -25,7 +25,7 @@ class ChangelogTask extends DefaultTask{
     def isNewRelease
 
     //Check if filename is defined in build.gradle
-    if(getFilename() == null){
+    if (getFilename() == null){
       Information.fileNameIsNotDefined()
       return
     }
@@ -34,24 +34,25 @@ class ChangelogTask extends DefaultTask{
     //if no changelog file exist new one would created
     def changelogFile = Information.readFilenAndShow(getFilename())
 
-    println "\033[1;31m -- Now write to your changelog -- \033[22m"
+    println Utility.RED_BOLD + " -- Now write to your changelog -- " + Utility.NORMAL
 
     //Loop so long until the input is "y" or "n"
     while(loopInput){
-      isNewRelease = System.console().readLine Utility.NEWLINE + "\033[31m Is this a new release Version? (y/n): \033[37m"
+      isNewRelease = System.console().readLine Utility.NEWLINE + Utility.RED + " Is this a new release Version? (y/n): " + Utility.WHITE
       if(isNewRelease == "y" || isNewRelease == "n"){
         loopInput = false
       }
     }
 
-    if(isNewRelease == "y") {
-      releaseVersion = System.console().readLine '\033[31m Version: \033[37m'
-    }else if (isNewRelease == "n"){
-      println "\33[31m New snapshot version created"
+    if (isNewRelease == "y") {
+      releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
+    } else if (isNewRelease == "n"){
+      println Utility.RED + " New snapshot version created"
       def changelogToString = changelogFile.text
       def versionNumber = changelogToString.find(Utility.regexVersionWithoutSuffix)
       snapshotVersion = versionNumber + "-SNAPSHOT-" + new Date().time
-    }else{
+
+    } else {
       println "SOMETHING GOES WRONG STOP PLUGIN"
       return
     }
@@ -61,12 +62,12 @@ class ChangelogTask extends DefaultTask{
     changeFrom = changeFrom.replace("\r", "").replace("\n", "")
 
     //Ask user is everything ok
-    def change = System.console().readLine "\033[31m Change:\033[37m [$branch] "
-    def changeIsOk = System.console().readLine "\033[31m Is everything ok? (y/n): \033[37m"
+    def change = System.console().readLine Utility.RED + " Change:" + Utility.WHITE + " [$branch] "
+    def changeIsOk = System.console().readLine Utility.RED + " Is everything ok? (y/n): " + Utility.WHITE
 
-    if(changeIsOk == "y") {
+    if (changeIsOk == "y") {
       def temp = changelogFile.text
-      if(isNewRelease == "y") {
+      if (isNewRelease == "y") {
         changelogFile.delete()
         changelogFile = new File(getFilename())
         changelogFile << Utility.NEWLINE
@@ -75,7 +76,7 @@ class ChangelogTask extends DefaultTask{
         changelogFile << "---" + Utility.NEWLINE
         changelogFile << changeFrom + Utility.NEWLINE
         changelogFile << temp
-      }else if (isNewRelease == "n"){
+      } else if (isNewRelease == "n") {
         temp = temp.replaceFirst(Utility.regexVersionWithSuffix, snapshotVersion)
         temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, snapshotVersion)
         def oldChanges = temp.find(Utility.regexText)
@@ -86,10 +87,10 @@ class ChangelogTask extends DefaultTask{
         changelogFile = new File(getFilename())
         changelogFile << temp
       }
-    }else if (changeIsOk == "n"){
+    } else if (changeIsOk == "n") {
       Information.secondChance()
       run()
-    }else{
+    } else {
       Information.changelogNotWritten()
     }
   }
