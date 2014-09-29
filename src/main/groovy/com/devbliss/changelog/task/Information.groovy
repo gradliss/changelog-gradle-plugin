@@ -33,7 +33,7 @@ class Information {
     println "\033[31m Please define a filename for changelog creation."
     println " The gradle task configuration looks like:"
     println ""
-    println "\033[1;37m releaseNote {"
+    println "\033[1;37m changelog {"
     println "\033[1;37m   filename = 'changelog.md'"
     println "\033[1;37m }"
   }
