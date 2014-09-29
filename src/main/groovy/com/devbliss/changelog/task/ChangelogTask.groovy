@@ -45,7 +45,7 @@ class ChangelogTask extends DefaultTask{
     }
 
     if (isNewRelease == "y") {
-      releaseVersion = System.console().readLine Utility.RED + ' Version: ' + Utility.WHITE
+      releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
     } else if (isNewRelease == "n"){
       println Utility.RED + " New snapshot version created"
       def changelogToString = changelogFile.text
