@@ -36,7 +36,7 @@ class ChangelogTask extends DefaultTask{
 
     println Utility.RED_BOLD + " -- Now write to your changelog -- " + Utility.NORMAL
 
-    //Loop so long until the input is "y" or "n"
+    //Loop until the user input is "y" or "n"
     while(loopInput){
       isNewRelease = System.console().readLine Utility.NEWLINE + Utility.RED + " Is this a new release Version? (y/n): " + Utility.WHITE
       if(isNewRelease == "y" || isNewRelease == "n"){
@@ -51,10 +51,6 @@ class ChangelogTask extends DefaultTask{
       def changelogToString = changelogFile.text
       def versionNumber = changelogToString.find(Utility.regexVersionWithoutSuffix)
       snapshotVersion = versionNumber + "-SNAPSHOT-" + new Date().time
-
-    } else {
-      println "SOMETHING GOES WRONG STOP PLUGIN"
-      return
     }
 
     //Remove line breaks
@@ -95,3 +91,4 @@ class ChangelogTask extends DefaultTask{
     }
   }
 }
+

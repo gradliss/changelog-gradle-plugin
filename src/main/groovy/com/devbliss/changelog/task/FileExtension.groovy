@@ -6,5 +6,5 @@ package com.devbliss.changelog.task
  */
 
 class FileExtension {
-  def filename
+  def String filename = "changelog.md"
 }

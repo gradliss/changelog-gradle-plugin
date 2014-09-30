@@ -1,7 +1,8 @@
 package com.devbliss.changelog
 
-import com.devbliss.changelog.task.ChangelogTask
 import com.devbliss.changelog.task.FileExtension
+import com.devbliss.changelog.task.ReleaseTask
+import com.devbliss.changelog.task.SnapshotTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -14,12 +15,8 @@ import org.gradle.api.Project
 class ChangelogPlugin implements Plugin<Project> {
   def void apply(Project project) {
 
-    def fileExtension = new FileExtension()
-
-    project.extensions.releasenote = fileExtension
-    project.tasks.withType(ChangelogTask){
-      conventionMapping.filename = { fileExtension.filename }
-    }
-    project.task('changelog', type: ChangelogTask)
+    project.extensions.create("changelog", FileExtension)
+    project.task("changelogSnapshot", type: SnapshotTask)
+    project.task("changelogRelease", type: ReleaseTask)
   }
 }
