@@ -28,7 +28,7 @@ class ReleaseTask extends DefaultTask{
 
     //Read file and show existing changelog
     //if no changelog file exist new one would created
-    def changelogFile = Information.readFilenAndShow(getFilename())
+    def changelogFile = Information.readFileAndShow(getFilename())
 
     println "RELEASE" + getFilename()
     releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE

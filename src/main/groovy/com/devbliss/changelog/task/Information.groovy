@@ -43,7 +43,7 @@ class Information {
     println Utility.RED_BOLD + " -- Changelog not written -- " + Utility.NORMAL
   }
 
-  def static readFilenAndShow(def changelogFile){
+  def static readFileAndShow(def changelogFile){
     println Utility.RED + " Try to read changelog with name: " + Utility.WHITE + changelogFile
     def changelog = new File(changelogFile)
 

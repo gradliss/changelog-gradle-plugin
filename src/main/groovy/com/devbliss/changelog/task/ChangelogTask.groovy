@@ -32,7 +32,7 @@ class ChangelogTask extends DefaultTask{
 
     //Read file and show existing changelog
     //if no changelog file exist new one would created
-    def changelogFile = Information.readFilenAndShow(getFilename())
+    def changelogFile = Information.readFileAndShow(getFilename())
 
     println Utility.RED_BOLD + " -- Now write to your changelog -- " + Utility.NORMAL
 
