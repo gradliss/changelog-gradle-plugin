@@ -14,7 +14,38 @@ class ReleaseTask extends DefaultTask{
 
   @TaskAction
   public void run() {
+
+    def releaseVersion
+    def userName = Information.getGitUsername()
+    def email = Information.getGitEmail()
+    def today = new Date()
+
+    //Check if filename is defined in build.gradle
+    if (getFilename() == null){
+      Information.fileNameIsNotDefined()
+      return
+    }
+
+    //Read file and show existing changelog
+    //if no changelog file exist new one would created
+    def changelogFile = Information.readFilenAndShow(getFilename())
+
     println "RELEASE" + getFilename()
+    releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
+
+    //Remove line breaks
+    def changeFrom = "Last change from: $userName $email $today"
+    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+
+    def temp = changelogFile.text
+
+    temp = temp.replaceFirst(Utility.regexVersionWithSuffix, releaseVersion)
+    temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, releaseVersion)
+    temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom)
+
+    changelogFile.delete()
+    changelogFile = new File(getFilename())
+    changelogFile << temp
   }
 }
 
