@@ -34,7 +34,7 @@ class ReleaseTask extends DefaultTask{
     releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
 
     //Remove line breaks
-    def changeFrom = "Last change from: $userName $email $today"
+    def changeFrom = "-- Last change from: $userName $email $today"
     changeFrom = changeFrom.replace("\r", "").replace("\n", "")
 
     def temp = changelogFile.text

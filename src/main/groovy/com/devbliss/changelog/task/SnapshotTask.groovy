@@ -35,7 +35,7 @@ class SnapshotTask extends DefaultTask{
     def changelogToString = changelogFile.text
     def versionLine = changelogToString.find(Utility.regexVersionWithoutSuffix)
     def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT-")
-    def versionNumber = versionLine.find(/(\d)*(\.\d*){0,2}/)
+    def versionNumber = versionLine.find(Utility.regexVersionNumber)
 
     println "isAlreadySnapshotVersion : $isAlreadySnapshotVersion"
     println "extracted versionLine: $versionLine"
