@@ -20,6 +20,7 @@ class Utility {
   //Regex for changelog manipulation
   public static final regexVersionWithoutSuffix = /(\d)*(\.\d*).*/
   public static final regexVersionWithSuffix = /(\d)*(\.\d*)+(-).*/
+  public static final regexVersionNumber = /(\d)*(\.\d*){0,2}/
   public static final regexText = /(- \[(.*)\])(.*?).*/
-  public static final regexChangeNameDate = /\bLast change from:(.*?)(\d+).*/
+  public static final regexChangeNameDate = /\-- Last change from:(.*?)(\d+).*/
 }
