@@ -56,7 +56,19 @@ class Information {
       println Utility.RED + " Changelog doesnt exist! New one would be created!"
       boolean success = new File(changelogFile).createNewFile()
       if (success) {
-        println Utility.RED + " File created: " + Utility.WHITE + changelogFile
+        changelog = new File(changelogFile)
+        def user = getGitUsername()
+        def email = getGitEmail()
+        def today = new Date()
+        def changeFrom = "Last change from: $user $email $today"
+        changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+        def initialVersion = "0.1.0-SNAPSHOT-" + today.time
+        changelog << Utility.NEWLINE
+        changelog << "### Version " + initialVersion
+        changelog << Utility.NEWLINE + "- [initial] initial commit" + Utility.NEWLINE
+        changelog << Utility.NEWLINE + "-- "
+        changelog << changeFrom
+        println Utility.RED + " File with initail Version $initialVersion was created: " + Utility.WHITE + changelogFile
       }
     }
     return changelog
