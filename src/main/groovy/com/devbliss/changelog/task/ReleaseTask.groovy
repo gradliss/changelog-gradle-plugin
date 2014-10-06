@@ -41,7 +41,7 @@ class ReleaseTask extends DefaultTask{
 
     temp = temp.replaceFirst(Utility.regexVersionWithSuffix, releaseVersion)
     temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, releaseVersion)
-    temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom)
+    temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom + Utility.NEWLINE)
 
     changelogFile.delete()
     changelogFile = new File(getFilename())

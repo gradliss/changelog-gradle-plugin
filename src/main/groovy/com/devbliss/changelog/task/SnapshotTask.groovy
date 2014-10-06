@@ -31,31 +31,29 @@ class SnapshotTask extends DefaultTask{
     //if no changelog file exist new one would created
     def changelogFile = Information.readFileAndShow(getFilename())
 
-    println "SNAP IT "+ getFilename()
+    println "Add Snapshot to "+ getFilename()
     def changelogToString = changelogFile.text
     def versionLine = changelogToString.find(Utility.regexVersionWithoutSuffix)
     def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT-")
     def versionNumber = versionLine.find(Utility.regexVersionNumber)
 
-    println "isAlreadySnapshotVersion : $isAlreadySnapshotVersion"
-    println "extracted versionLine: $versionLine"
-    println("only versionNumber: $versionNumber")
-
+    // handle version line and increment version number for a new snapshot version
     if (isAlreadySnapshotVersion) {
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + new Date().time)
+      snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
     } else {
+      // extract minor version number in order to increment it.
+      // only works for the version number layout we use at the moment: e.g. --> 0.0.0
       def major = versionNumber.subSequence(0, 1)
       def minor = versionNumber.subSequence(2, 3) as int
       minor++
-      def incremented = major + "." + minor + ".0"
-      println("splitted $incremented")
+      def incrementedVersionNumber = major + "." + minor + ".0"
 
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$incremented-SNAPSHOT-" + new Date().time)
+      snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
     }
+
     println Utility.RED + " New snapshot version created" + Utility.RED_BOLD + " $snapshotVersion"
 
-
-        //Remove line breaks
+    //Remove line breaks
     def changeFrom = "-- Last change from: $userName $email $today"
     changeFrom = changeFrom.replace("\r", "").replace("\n", "")
     def change = System.console().readLine Utility.RED + " Change:" + Utility.WHITE + " [$branch] "
@@ -63,9 +61,8 @@ class SnapshotTask extends DefaultTask{
     def temp = changelogFile.text
     if (isAlreadySnapshotVersion) {
       temp = temp.replaceFirst(Utility.regexVersionWithSuffix, snapshotVersion)
-      //temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, snapshotVersion)
       def oldChanges = temp.find(Utility.regexText)
-      def newstuff = "  - [$branch] " + change + Utility.NEWLINE + "  " + oldChanges + Utility.NEWLINE
+      def newstuff = " - [$branch] " + change + Utility.NEWLINE + oldChanges// + Utility.NEWLINE
       temp = temp.replaceFirst(Utility.regexText, newstuff)
       temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom)
       changelogFile.delete()
@@ -75,8 +72,8 @@ class SnapshotTask extends DefaultTask{
       changelogFile.delete()
       changelogFile = new File(getFilename())
       changelogFile << Utility.NEWLINE + "### Version $snapshotVersion" + Utility.NEWLINE
-      changelogFile << "  -[$branch] " + change + Utility.NEWLINE
-      changelogFile << Utility.NEWLINE + changeFrom + Utility.NEWLINE
+      changelogFile << " - [$branch] " + change + Utility.NEWLINE
+      changelogFile << Utility.NEWLINE + changeFrom + Utility.NEWLINE + Utility.NEWLINE
       changelogFile << temp
     }
   }

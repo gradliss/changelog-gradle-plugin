@@ -65,7 +65,7 @@ class Information {
         def initialVersion = "0.1.0-SNAPSHOT-" + today.time
         changelog << Utility.NEWLINE
         changelog << "### Version " + initialVersion
-        changelog << Utility.NEWLINE + "- [initial] initial commit" + Utility.NEWLINE
+        changelog << Utility.NEWLINE + " - [initial] initial commit" + Utility.NEWLINE
         changelog << Utility.NEWLINE + "-- "
         changelog << changeFrom
         println Utility.RED + " File with initail Version $initialVersion was created: " + Utility.WHITE + changelogFile
