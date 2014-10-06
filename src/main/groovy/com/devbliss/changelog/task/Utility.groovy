@@ -1,8 +1,13 @@
 package com.devbliss.changelog.task
 
 /**
+ * The Utility class gives the plugin some static variables to make the code more readable.
+ * Includes Regex to manipulate the changelog file and some colors for the Command-line.
+ *  
  * @author Christian Soth <christian.soth@devbliss.com>
- *
+ * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
+ * 
+ * @version 0.0.1  
  */
 
 class Utility {

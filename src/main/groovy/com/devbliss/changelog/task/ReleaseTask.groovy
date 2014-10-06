@@ -5,7 +5,9 @@ import org.gradle.api.tasks.TaskAction
 
 /**
  * @author Christian Soth <christian.soth@devbliss.com>
- *
+ * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
+ * 
+ * @version 0.0.1
  */
 
 class ReleaseTask extends DefaultTask{

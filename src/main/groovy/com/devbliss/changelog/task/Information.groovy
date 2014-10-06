@@ -2,7 +2,9 @@ package com.devbliss.changelog.task
 
 /**
  * @author Christian Soth <christian.soth@devbliss.com>
- *
+ * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
+ * 
+ * @version 0.0.1
  */
 
 class Information {
