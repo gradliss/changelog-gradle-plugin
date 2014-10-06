@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
- * The release task set the latest snapshot version to the user given version number.
+ * The release task sets the latest snapshot version to the user given version number.
  *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>

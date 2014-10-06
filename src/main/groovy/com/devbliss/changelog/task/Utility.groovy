@@ -3,11 +3,11 @@ package com.devbliss.changelog.task
 /**
  * The Utility class gives the plugin some static variables to make the code more readable.
  * Includes Regex to manipulate the changelog file and some colors for the Command-line.
- *  
+ *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
- * 
- * @version 0.0.1  
+ *
+ * @version 0.0.1
  */
 
 class Utility {
@@ -27,5 +27,5 @@ class Utility {
   public static final regexVersionWithSuffix = /(\d)*(\.\d*)+(-).*/
   public static final regexVersionNumber = /(\d)*(\.\d*){0,2}/
   public static final regexText = /( - \[(.*)\])(.*?).*/
-  public static final regexChangeNameDate = /\-- Last change from:(.*?)(\d+).*/
+  public static final regexChangeNameDate = /\-- Last change by:(.*?)(\d+).*/
 }

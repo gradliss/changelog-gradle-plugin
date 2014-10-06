@@ -4,7 +4,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
- * This task defines the changelogSnapshot. It differentiates whether an snapshot version already exists.
+ * This task defines the changelogSnapshot. It differentiates whether a snapshot version already exists.
  * In case of an already existing snapshot version, only a new entry tab will be popped
  * onto the first position of the current snapshot and the actual timestamp will be replaced in snapshot name.
  * In case there is no snapshot version in the changelog file, there will be the latest release number
@@ -52,7 +52,7 @@ class SnapshotTask extends ChangelogTask{
     if (isAlreadySnapshotVersion) {
       temp = temp.replaceFirst(Utility.regexVersionWithSuffix, snapshotVersion)
       def oldChanges = temp.find(Utility.regexText)
-      def newstuff = " - [$branch] " + change + Utility.NEWLINE + oldChanges// + Utility.NEWLINE
+      def newstuff = " - [$branch] " + change + Utility.NEWLINE + oldChanges
       temp = temp.replaceFirst(Utility.regexText, newstuff)
       temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom)
       changelogFile.delete()

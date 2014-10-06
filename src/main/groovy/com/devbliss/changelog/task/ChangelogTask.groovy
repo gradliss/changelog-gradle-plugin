@@ -4,9 +4,9 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
- * The changelog task does some rudimentary stuff which belongs to {@link SnapshotTask.groovy} either {@link ReleaseTask.groovy}.
+ * The changelog task does some rudimentary stuff which belongs either to {@link SnapshotTask.groovy} or to {@link ReleaseTask.groovy}.
  * For example preparing same information (e.g. user name, email, branch etc.) needed by each sub task or more
- * essential, check for an existing changelog file and trigger the creation of a changlog file within a inatial snapshot version
+ * essential, check for an existing changelog file and trigger the creation of a changelog file within a initial snapshot version
  * if no changelog file exists.
  *
  * @author Christian Soth <christian.soth@devbliss.com>
@@ -41,7 +41,7 @@ class ChangelogTask extends DefaultTask{
   changelogFile = Information.readFileAndShow(getFilename())
 
   //Remove line breaks
-  changeFrom = "-- Last change from: $userName $email $today"
+  changeFrom = "-- Last change by: $userName $email $today"
   changeFrom = changeFrom.replace("\r", "").replace("\n", "")
   }
 }

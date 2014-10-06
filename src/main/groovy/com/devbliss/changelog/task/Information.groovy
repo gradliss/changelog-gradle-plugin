@@ -2,7 +2,7 @@ package com.devbliss.changelog.task
 
 /**
  * Providing some information stuff like user name, branch type and email extracted from git configuration.
- * The case if no changelog file already exists will be handled here - There will be a new changelog file created,
+ * The case if no file exists yet will be handled here - There will be a new changelog file created,
  * including an initial snapshot version in format 0.1.0-SNAPSHOT-current-timestamp.
  *
  * @author Christian Soth <christian.soth@devbliss.com>
@@ -66,14 +66,13 @@ class Information {
         def user = getGitUsername()
         def email = getGitEmail()
         def today = new Date()
-        def changeFrom = "Last change from: $user $email $today"
+        def changeFrom = "Last change by: $user $email $today"
         changeFrom = changeFrom.replace("\r", "").replace("\n", "")
         def initialVersion = "0.1.0-SNAPSHOT-" + today.time
         changelog << Utility.NEWLINE
         changelog << "### Version " + initialVersion
         changelog << Utility.NEWLINE + " - [initial] initial commit" + Utility.NEWLINE
-        changelog << Utility.NEWLINE + "-- "
-        changelog << changeFrom
+        changelog << Utility.NEWLINE + "-- " + changeFrom
         println Utility.RED + " File with initail Version $initialVersion was created: " + Utility.WHITE + changelogFile
       }
     }
