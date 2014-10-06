@@ -4,46 +4,31 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
+ * The release task set the latest snapshot version to the user given version number.
+ *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
- * 
+ *
  * @version 0.0.1
  */
 
-class ReleaseTask extends DefaultTask{
-
-  def filename = project.changelog.filename
+class ReleaseTask extends ChangelogTask {
 
   @TaskAction
   public void run() {
-
+    super.run()
     def releaseVersion
-    def userName = Information.getGitUsername()
-    def email = Information.getGitEmail()
-    def today = new Date()
 
-    //Check if filename is defined in build.gradle
-    if (getFilename() == null){
-      Information.fileNameIsNotDefined()
-      return
-    }
-
-    //Read file and show existing changelog
-    //if no changelog file exist new one would created
-    def changelogFile = Information.readFileAndShow(getFilename())
-
-    println "RELEASE" + getFilename()
+    println "Add release to " + getFilename()
     releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
 
-    //Remove line breaks
-    def changeFrom = "-- Last change from: $userName $email $today"
-    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+    println Utility.RED + " New release version created" + Utility.RED_BOLD + " $releaseVersion" + Utility.WHITE
 
     def temp = changelogFile.text
 
     temp = temp.replaceFirst(Utility.regexVersionWithSuffix, releaseVersion)
     temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, releaseVersion)
-    temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom + Utility.NEWLINE)
+    temp = temp.replaceFirst(Utility.regexChangeNameDate, changeFrom)
 
     changelogFile.delete()
     changelogFile = new File(getFilename())

@@ -4,36 +4,25 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
- * This class defines the changelogSnapshot task.
+ * This task defines the changelogSnapshot. It differentiates whether an snapshot version already exists.
+ * In case of an already existing snapshot version, only a new entry tab will be popped
+ * onto the first position of the current snapshot and the actual timestamp will be replaced in snapshot name.
+ * In case there is no snapshot version in the changelog file, there will be the latest release number
+ * increased at the minor level to generate a completely new snapshot version paragraph within a new
+ * entry tab depending on the branch type (e.g. feature, bug, refactor etc.) and the given user description.
  *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
- * 
+ *
  * @version 0.0.1
  */
 
 class SnapshotTask extends ChangelogTask{
 
-  def filename = project.changelog.filename
-
   @TaskAction
   public void run() {
     super.run()
     def snapshotVersion
-    //def branch = Information.getGitBranch()
-    def userName = Information.getGitUsername()
-    def email = Information.getGitEmail()
-    def today = new Date()
-
-    //Check if filename is defined in build.gradle
-    if (getFilename() == null){
-      Information.fileNameIsNotDefined()
-      return
-    }
-
-    //Read file and show existing changelog
-    //if no changelog file exist new one would created
-    def changelogFile = Information.readFileAndShow(getFilename())
 
     println "Add Snapshot to "+ getFilename()
     def changelogToString = changelogFile.text
@@ -57,9 +46,6 @@ class SnapshotTask extends ChangelogTask{
 
     println Utility.RED + " New snapshot version created" + Utility.RED_BOLD + " $snapshotVersion"
 
-    //Remove line breaks
-    def changeFrom = "-- Last change from: $userName $email $today"
-    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
     def change = System.console().readLine Utility.RED + " Change:" + Utility.WHITE + " [$branch] "
 
     def temp = changelogFile.text

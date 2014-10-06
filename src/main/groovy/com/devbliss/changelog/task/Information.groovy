@@ -1,9 +1,13 @@
 package com.devbliss.changelog.task
 
 /**
+ * Providing some information stuff like user name, branch type and email extracted from git configuration.
+ * The case if no changelog file already exists will be handled here - There will be a new changelog file created,
+ * including an initial snapshot version in format 0.1.0-SNAPSHOT-current-timestamp.
+ *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
- * 
+ *
  * @version 0.0.1
  */
 
