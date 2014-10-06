@@ -12,15 +12,15 @@ import org.gradle.api.tasks.TaskAction
  * @version 0.0.1
  */
 
-class SnapshotTask extends DefaultTask{
+class SnapshotTask extends ChangelogTask{
 
   def filename = project.changelog.filename
 
   @TaskAction
   public void run() {
-
+    super.run()
     def snapshotVersion
-    def branch = Information.getGitBranch()
+    //def branch = Information.getGitBranch()
     def userName = Information.getGitUsername()
     def email = Information.getGitEmail()
     def today = new Date()
