@@ -1,7 +1,7 @@
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: "com.jfrog.bintray"
 
 sourceCompatibility = '1.8'
 
@@ -109,7 +109,7 @@ bintray {
     repo = 'gradle-plugins'
     userOrg = orgId
     name = 'changelog-gradle-plugin'
-    desc = 'Gradle changelog plugin. A plugin for the gradle build system to write changelogs painless.'
+    desc = 'Gradle changelog plugin. A plugin for the gradle build system to write changelogs painlessly.'
     websiteUrl = project.project_website
     issueTrackerUrl = "https://github.com/{$orgId}/${projectId}/issues"
     vcsUrl = project.project_scm
@@ -117,14 +117,17 @@ bintray {
     labels = [
       'changelog',
       'gradle',
-      'plugin'
+      'plugin',
+      'snapshot',
+      'release',
+      'releasenote'
     ]
     publicDownloadNumbers = true
     version {
       name = project.version
       userOrg = orgId
       vcsTag = project.version
-      attributes = ['gradle-plugin': 'com.devbliss:com.devbliss.changelog:changelog-gradle-plugin']
+      attributes = ['gradle-plugin': 'com.devbliss.changelog:com.devbliss.changelog:changelog-gradle-plugin']
     }
   }
 }
