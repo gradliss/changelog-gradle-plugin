@@ -31,7 +31,7 @@ plugins {
 ```
 ### Configuration
 
-The only thing you have to define in your build.gradle is the filename from you changelog. At this point we only support .md extension so that the plugin in can work correctly. 
+The only thing you have to define in your build.gradle is the filename of your changelog. At this point we only support .md extension so that the plugin can work correctly. 
 
 ```
 changelog {
@@ -41,10 +41,9 @@ changelog {
 ```
 
 ### Usage
+You have two tasks which you can run via the gradle command line **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
 
-You have two tasks you can run via the gradle comman line **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
-
-The tasks are self explained if you run changeloRelease a new release version would be written to the chanlog file and if you use changelogSnapshot a new snapshot version would written.
+The tasks are self explained if you run changelogRelease a new release version will be written to the changelog file and if you use changelogSnapshot a new snapshot version will be written.
 
 ### Local usage
 
@@ -60,7 +59,7 @@ After this u can use the gradle wrapper to install the jar to you local maven re
 ./gradlew install
 ```
 
-Now it is installed too your maven repo.
+Now it is installed to your maven repo.
 To use this plugin you have to use this snippet.
 
 ```
