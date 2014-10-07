@@ -3,6 +3,7 @@ changelog-gradle-plugin
 
 A plugin for the gradle build system to write changelogs painless
 
+[ ![Download](https://api.bintray.com/packages/devbliss/gradle-plugins/changelog-gradle-plugin/images/download.svg) ](https://bintray.com/devbliss/gradle-plugins/changelog-gradle-plugin/_latestVersion)
 
 ### Installation
 
