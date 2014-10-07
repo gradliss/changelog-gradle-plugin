@@ -15,10 +15,11 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath "com.devbliss:changelog-gradle-plugin:0.1.0"
+    classpath "com.devbliss.changelog:changelog-gradle-plugin:1.0.0"
   }
 }
-apply plugin: "com.devbliss.gradle.changelog"
+
+apply plugin: "com.devbliss.changelog"
 
 ```
 
@@ -26,7 +27,7 @@ Build script snippet for new, incubating, plugin mechanism introduced in Gradle 
 
 ```
 plugins {
-  id "com.devbliss.gradle.changelog" version "0.1.0"
+  id "com.devbliss.changelog" version "1.0.0"
 }
 
 ```
