@@ -1,31 +1,133 @@
+apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 sourceCompatibility = '1.8'
 
-group = 'com.devbliss.changelog'
-version = '0.1.0'
+group = project.group
+version = project.version
 
 repositories {
   mavenLocal()
   mavenCentral()
+  maven { url "https://repo.gradle.org/gradle/libs" }
 }
 
 dependencies {
   compile gradleApi()
   compile localGroovy()
-  testCompile 'org.spockframework:spock-maven:0.7-groovy-2.0'
-  testCompile "junit:junit:4.+"
+  testCompile "org.spockframework:spock-maven:$spockVersion",
+      "junit:junit:$junitVersion"
 }
 
-uploadArchives {
+task wrapper(type: Wrapper) { gradleVersion = 2.1  }
+
+/**
+ * Bintray settings
+ * */
+buildscript {
   repositories {
-    mavenDeployer {
-      repository(url: "http://nexus.devbliss.com/content/repositories/releases/") {
-        authentication(userName: "deployment", password: "deployment")
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
+    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$infoExtractorVersion"
+  }
+}
+
+ext {
+  project_website = "https://github.com/{$orgId}/${projectId}"
+  project_scm = "scm:git@github.com:${orgId}/${projectId}.git"
+  license_url = "https://raw.github.com/${orgId}/${projectId}/master/license.txt"
+}
+
+if( !hasProperty( 'bintrayUser' ) )
+  ext.bintrayUser = ''
+
+if( !hasProperty( 'bintrayKey' ) )
+  ext.bintrayKey = ''
+
+def pomConfig = {
+  licenses {
+    license {
+      name "The Apache Software License, Version 2.0"
+      url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+      distribution "repo"
+    }
+  }
+  developers {
+    developer {
+      id "christian-soth"
+      name "Christian Soth"
+      email "christian.soth@devbliss.com"
+    }
+    developer {
+      id "philipp-karstetd"
+      name "Philipp Karstedt"
+      email "philipp.karstedt@devbliss.com"
+    }
+  }
+}
+
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allSource
+  classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from 'build/docs/javadoc'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      artifact sourcesJar
+      artifact javadocJar
+
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', 'A Gradle Plugin to write changelogs.')
+        root.children().last() + pomConfig
       }
     }
   }
 }
 
-task wrapper(type: Wrapper) { gradleVersion = 2.1  }
+bintray {
+  user = bintrayUser
+  key = bintrayKey
+
+  publications = ['mavenJava']
+
+  dryRun = false //Whether to run this as dry-run, without deploying
+  publish = false //If version should be auto published after an upload
+  pkg {
+    repo = 'gradle-plugins'
+    userOrg = orgId
+    name = 'changelog-gradle-plugin'
+    desc = 'Gradle changelog plugin. A plugin for the gradle build system to write changelogs painless.'
+    websiteUrl = project.project_website
+    issueTrackerUrl = "https://github.com/{$orgId}/${projectId}/issues"
+    vcsUrl = project.project_scm
+    licenses = ['Apache-2.0']
+    labels = [
+      'changelog',
+      'gradle',
+      'plugin'
+    ]
+    publicDownloadNumbers = true
+    version {
+      name = project.version
+      userOrg = orgId
+      vcsTag = project.version
+      attributes = ['gradle-plugin': 'com.devbliss:com.devbliss.changelog:changelog-gradle-plugin']
+    }
+  }
+}
+
+task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << { logger.info "Installing $project.name" }
+
