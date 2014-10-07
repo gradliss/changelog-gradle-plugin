@@ -20,7 +20,7 @@ class Utility {
 
   public static final NORMAL = "\033[22m" //remove bold
 
-  public static final NEWLINE = System.getProperty("line.separator")
+  public static final NEWLINE = "\r\n"
 
   //Regex for changelog manipulation
   public static final regexVersionWithoutSuffix = /(\d)*(\.\d*).*/
