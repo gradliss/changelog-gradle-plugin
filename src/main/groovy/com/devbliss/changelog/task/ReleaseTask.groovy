@@ -20,15 +20,15 @@ class ReleaseTask extends ChangelogTask {
     def releaseVersion
 
     println "Add release to " + getFilename()
-    releaseVersion = System.console().readLine Utility.RED + " Version: " + Utility.WHITE
+    releaseVersion = System.console().readLine Constants.RED + " Version: " + Constants.WHITE
 
-    println Utility.RED + " New release version created" + Utility.RED_BOLD + " $releaseVersion" + Utility.WHITE
+    println Constants.RED + " New release version created" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
 
     def temp = changelogFile.text
 
-    temp = temp.replaceFirst(Utility.regexVersionWithSuffix, releaseVersion)
-    temp = temp.replaceFirst(Utility.regexVersionWithoutSuffix, releaseVersion)
-    temp = temp.replaceFirst(Utility.regexChangeNameDate, Information.getChangeFrom(today))
+    temp = temp.replaceFirst(Constants.regexVersionWithSuffix, releaseVersion)
+    temp = temp.replaceFirst(Constants.regexVersionWithoutSuffix, releaseVersion)
+    temp = temp.replaceFirst(Constants.regexChangeNameDate, Utility.getChangeFrom(today))
 
     changelogFile.delete()
     changelogFile = new File(getFilename())
