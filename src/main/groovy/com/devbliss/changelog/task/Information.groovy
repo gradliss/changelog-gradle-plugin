@@ -44,7 +44,7 @@ class Information {
     println Utility.WHITE_BOLD + " }"
   }
 
-  def static changelogNotWritten(){
+  def static changelogNotWritten() {
     println ""
     println Utility.RED_BOLD + " -- Changelog not written -- " + Utility.NORMAL
   }
@@ -63,25 +63,25 @@ class Information {
       boolean success = new File(changelogFile).createNewFile()
       if (success) {
         changelog = new File(changelogFile)
-        def user = getGitUsername()
-        def email = getGitEmail()
+
         def today = new Date()
-        def changeFrom = "Last change by: $user $email $today"
-        changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+
         def initialVersion = "0.1.0-SNAPSHOT-" + today.time
         changelog << Utility.NEWLINE
         changelog << "### Version " + initialVersion
         changelog << Utility.NEWLINE + " - [initial] initial commit" + Utility.NEWLINE
-        changelog << Utility.NEWLINE + "-- " + changeFrom
+        changelog << Utility.NEWLINE + getChangeFrom(today)
         println Utility.RED + " File with initail Version $initialVersion was created: " + Utility.WHITE + changelogFile
       }
     }
     return changelog
   }
 
-  def static secondChance(){
-    println Utility.NEWLINE
-    println Utility.RED_BOLD + " -!- Ok you have a second chance -!- " + Utility.NORMAL
-    println Utility.NEWLINE
+  def static getChangeFrom(today) {
+    def user = getGitUsername()
+    def email = getGitEmail()
+    def changeFrom = "-- Last change by: $user $email $today"
+    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+    return changeFrom
   }
 }

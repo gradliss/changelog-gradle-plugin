@@ -20,29 +20,21 @@ class ChangelogTask extends DefaultTask{
 
   def filename = project.changelog.filename
   def branch = Information.getGitBranch()
-  def userName = Information.getGitUsername()
-  def email = Information.getGitEmail()
   def today = new Date()
   def changelogFile
-  def changeFrom
 
   @TaskAction
   public void run() {
-  println("task run() of changelogTask")
 
-  //Check if filename is defined in build.gradle
-  if (getFilename() == null){
-    Information.fileNameIsNotDefined()
-    return
-  }
+    //Check if filename is defined in build.gradle
+    if (getFilename() == null){
+      Information.fileNameIsNotDefined()
+      return
+    }
 
-  //Read file and show existing changelog
-  //if no changelog file exist new one would created
-  changelogFile = Information.readFileAndShow(getFilename())
-
-  //Remove line breaks
-  changeFrom = "-- Last change by: $userName $email $today"
-  changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+    //Read file and show existing changelog
+    //if no changelog file exist new one would created
+    changelogFile = Information.readFileAndShow(getFilename())
   }
 }
 
