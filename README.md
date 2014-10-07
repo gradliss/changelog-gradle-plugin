@@ -19,10 +19,6 @@ buildscript {
 }
 apply plugin: "com.devbliss.gradle.changelog"
 
-changelog {
-	filename = 'changelog.md'
-}
-
 ```
 
 Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
@@ -33,9 +29,22 @@ plugins {
 }
 
 ```
+### Configuration
+
+The only thing you have to define in your build.gradle is the filename from you changelog. At this point we only support .md extension so that the plugin in can work correctly. 
+
+```
+changelog {
+	filename = 'changelog.md'
+}
+
+```
+
 ### Usage
 
 You have two tasks you can run via the gradle comman line **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
+
+The tasks are self explained if you run changeloRelease a new release version would be written to the chanlog file and if you use changelogSnapshot a new snapshot version would written.
 
 ### Local usage
 
