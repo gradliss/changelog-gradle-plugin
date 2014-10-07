@@ -1,8 +1,9 @@
 package com.devbliss.changelog.task
 
 /**
- * The Utility class gives the plugin some static variables to make the code more readable.
- * Includes Regex to manipulate the changelog file and some colors for the Command-line.
+ * Providing some information stuff like user name, branch type and email extracted from git configuration.
+ * The case if no file exists yet will be handled here - There will be a new changelog file created,
+ * including an initial snapshot version in format 0.1.0-SNAPSHOT-<current-timestamp>.
  *
  * @author Christian Soth <christian.soth@devbliss.com>
  * @author Philipp Karstedt <philipp.karstedt@devbliss.com>
@@ -11,21 +12,38 @@ package com.devbliss.changelog.task
  */
 
 class Utility {
-  //Some static color's for cmd
-  public static final RED = "\033[31m"
-  public static final RED_BOLD = "\033[1;31m"
 
-  public static final WHITE = "\033[37m"
-  public static final WHITE_BOLD = "\033[1;37m"
+  def static readFileAndShow(def changelogFile){
+    println Constants.RED + " Try to read changelog with name: " + Constants.WHITE + changelogFile
+    def changelog = new File(changelogFile)
 
-  public static final NORMAL = "\033[22m" //remove bold
+    if (changelog.exists()) {
+      Messages.changelogFileReadSuccess(changelog.text)
+    } else {
+      Messages.changelogFileDoesNotExist()
+      boolean success = new File(changelogFile).createNewFile()
+      
+      if (success) {
+        changelog = new File(changelogFile)
 
-  public static final NEWLINE = "\r\n"
+        def today = new Date()
 
-  //Regex for changelog manipulation
-  public static final regexVersionWithoutSuffix = /(\d)*(\.\d*).*/
-  public static final regexVersionWithSuffix = /(\d)*(\.\d*)+(-).*/
-  public static final regexVersionNumber = /(\d)*(\.\d*){0,2}/
-  public static final regexText = /( - \[(.*)\])(.*?).*/
-  public static final regexChangeNameDate = /\-- Last change by:(.*?)(\d+).*/
+        def initialVersion = "0.1.0-SNAPSHOT-" + today.time
+        changelog << Constants.NEWLINE
+        changelog << "### Version " + initialVersion
+        changelog << Constants.NEWLINE + " - [initial] initial commit" + Constants.NEWLINE
+        changelog << Constants.NEWLINE + getChangeFrom(today)
+        Messages.changelogFileCreated(initialVersion, changelogFile)
+      }
+    }
+    return changelog
+  }
+
+  def static getChangeFrom(today) {
+    def user = GitFacade.getGitUsername()
+    def email = GitFacade.getGitEmail()
+    def changeFrom = "-- Last change by: $user $email $today"
+    changeFrom = changeFrom.replace("\r", "").replace("\n", "")
+    return changeFrom
+  }
 }

@@ -26,9 +26,9 @@ class SnapshotTask extends ChangelogTask{
 
     println "Add Snapshot to "+ getFilename()
     def changelogToString = changelogFile.text
-    def versionLine = changelogToString.find(Utility.regexVersionWithoutSuffix)
+    def versionLine = changelogToString.find(Constants.regexVersionWithoutSuffix)
     def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT-")
-    def versionNumber = versionLine.find(Utility.regexVersionNumber)
+    def versionNumber = versionLine.find(Constants.regexVersionNumber)
 
     // handle version line and increment version number for a new snapshot version
     if (isAlreadySnapshotVersion) {
@@ -44,26 +44,26 @@ class SnapshotTask extends ChangelogTask{
       snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
     }
 
-    println Utility.RED + " New snapshot version created" + Utility.RED_BOLD + " $snapshotVersion"
+    println Constants.RED + " New snapshot version created" + Constants.RED_BOLD + " $snapshotVersion"
 
-    def change = System.console().readLine Utility.RED + " Change:" + Utility.WHITE + " [$branch] "
+    def change = System.console().readLine Constants.RED + " Change:" + Constants.WHITE + " [$branch] "
 
     def temp = changelogFile.text
     if (isAlreadySnapshotVersion) {
-      temp = temp.replaceFirst(Utility.regexVersionWithSuffix, snapshotVersion)
-      def oldChanges = temp.find(Utility.regexText)
-      def newstuff = " - [$branch] " + change + Utility.NEWLINE + oldChanges
-      temp = temp.replaceFirst(Utility.regexText, newstuff)
-      temp = temp.replaceFirst(Utility.regexChangeNameDate, Information.getChangeFrom(today))
+      temp = temp.replaceFirst(Constants.regexVersionWithSuffix, snapshotVersion)
+      def oldChanges = temp.find(Constants.regexText)
+      def newstuff = " - [$branch] " + change + Constants.NEWLINE + oldChanges
+      temp = temp.replaceFirst(Constants.regexText, newstuff)
+      temp = temp.replaceFirst(Constants.regexChangeNameDate, Utility.getChangeFrom(today))
       changelogFile.delete()
       changelogFile = new File(getFilename())
       changelogFile << temp
     } else {
       changelogFile.delete()
       changelogFile = new File(getFilename())
-      changelogFile << Utility.NEWLINE + "### Version $snapshotVersion" + Utility.NEWLINE
-      changelogFile << " - [$branch] " + change + Utility.NEWLINE
-      changelogFile << Utility.NEWLINE + Information.getChangeFrom(today) + Utility.NEWLINE + Utility.NEWLINE
+      changelogFile << Constants.NEWLINE + "### Version $snapshotVersion" + Constants.NEWLINE
+      changelogFile << " - [$branch] " + change + Constants.NEWLINE
+      changelogFile << Constants.NEWLINE + Utility.getChangeFrom(today) + Constants.NEWLINE + Constants.NEWLINE
       changelogFile << temp
     }
   }
