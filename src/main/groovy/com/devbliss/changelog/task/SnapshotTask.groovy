@@ -52,7 +52,7 @@ class SnapshotTask extends ChangelogTask{
     if (isAlreadySnapshotVersion) {
       temp = temp.replaceFirst(Constants.regexVersionWithSuffix, snapshotVersion)
       def oldChanges = temp.find(Constants.regexText)
-      def newstuff = " - $branch " + change + Constants.NEWLINE + oldChanges
+      def newstuff = " - $branch" + change + Constants.NEWLINE + oldChanges
       temp = temp.replaceFirst(Constants.regexText, newstuff)
       temp = temp.replaceFirst(Constants.regexChangeNameDate, Utility.getChangeFrom(today))
       changelogFile.delete()
@@ -62,7 +62,7 @@ class SnapshotTask extends ChangelogTask{
       changelogFile.delete()
       changelogFile = new File(getFilename())
       changelogFile << Constants.NEWLINE + "### Version $snapshotVersion" + Constants.NEWLINE
-      changelogFile << " - $branch " + change + Constants.NEWLINE
+      changelogFile << " - $branch" + change + Constants.NEWLINE
       changelogFile << Constants.NEWLINE + Utility.getChangeFrom(today) + Constants.NEWLINE + Constants.NEWLINE
       changelogFile << temp
     }

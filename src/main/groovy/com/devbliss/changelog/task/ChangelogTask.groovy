@@ -45,7 +45,7 @@ abstract class ChangelogTask extends DefaultTask{
       def firstPartOfGitBranch = GitFacade.getFirstPartOfGitBranch()
 
       if(firstPartOfGitBranch) {
-        return '[' + firstPartOfGitBranch + ']'
+        return '[' + firstPartOfGitBranch + '] '
       }
     } else {
       Messages.gitIsNotInstalled()
