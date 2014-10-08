@@ -22,17 +22,10 @@ abstract class ChangelogTask extends DefaultTask{
   def branch
   def today = new Date()
   def changelogFile
-  
-  public ChangelogTask() {
-    branch = getBranch()
-    System.err.println "########### CHANGELOG TASK branch: $branch"
-    System.err.println "########### CHANGELOG TASK branch: $branch"
-    System.err.println "########### CHANGELOG TASK branch: $branch"
-    System.err.println "########### CHANGELOG TASK branch: $branch"
-  }
 
   @TaskAction
   public void run() {
+    branch = tryToGetBranch()
     filename = getFilenameFromBuildfile()
 
     if (filename == null){
@@ -47,7 +40,7 @@ abstract class ChangelogTask extends DefaultTask{
     return project.changelog.filename
   }
 
-  private def getBranch() {
+  private def tryToGetBranch() {
     if(GitFacade.isGitInstalled()) {
       def firstPartOfGitBranch = GitFacade.getFirstPartOfGitBranch()
 
@@ -58,7 +51,7 @@ abstract class ChangelogTask extends DefaultTask{
       Messages.gitIsNotInstalled()
     }
 
-    return "bla"
+    return ""
   }
 }
 
