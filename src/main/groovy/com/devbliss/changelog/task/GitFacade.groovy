@@ -23,7 +23,11 @@ class GitFacade {
     def proc = command.execute()
     proc.waitFor()
     def branch = proc.in.text
-    def branchDefinition = branch.substring(0,branch.lastIndexOf("/"))
+    def firstIndexOfSlash = branch.indexOf("/")
+    
+    if(firstIndexOfSlash > 0) {
+      return branch.substring(0, firstIndexOfSlash)
+    }
   }
   
   def static getGitUsername(){

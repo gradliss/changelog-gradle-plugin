@@ -11,6 +11,8 @@ package com.devbliss.changelog.task
  */
 
 class Constants {
+  public static final DEFAULT_CHANGELOG_FILENAME = 'changelog.md'
+  
   //Some static color's for cmd
   public static final RED = "\033[31m"
   public static final RED_BOLD = "\033[1;31m"

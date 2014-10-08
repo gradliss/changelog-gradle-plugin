@@ -13,18 +13,25 @@ package com.devbliss.changelog.task
 
 class Utility {
 
-  def static readFileAndShow(def changelogFile){
-    println Constants.RED + " Try to read changelog with name: " + Constants.WHITE + changelogFile
-    def changelog = new File(changelogFile)
+  /**
+   * Reads existing changelog file and prints its current content, or creates a new one with initial content
+   * if it does not exist yet.
+   * 
+   * @param changelogFile
+   * @return
+   */
+  def static readFileAndShowOrCreate(def changelogFileName){
+    println Constants.RED + " Try to read changelog with name: " + Constants.WHITE + changelogFileName
+    def changelog = new File(changelogFileName)
 
     if (changelog.exists()) {
       Messages.changelogFileReadSuccess(changelog.text)
     } else {
       Messages.changelogFileDoesNotExist()
-      boolean success = new File(changelogFile).createNewFile()
+      boolean success = new File(changelogFileName).createNewFile()
       
       if (success) {
-        changelog = new File(changelogFile)
+        changelog = new File(changelogFileName)
 
         def today = new Date()
 
@@ -33,7 +40,7 @@ class Utility {
         changelog << "### Version " + initialVersion
         changelog << Constants.NEWLINE + " - [initial] initial commit" + Constants.NEWLINE
         changelog << Constants.NEWLINE + getChangeFrom(today)
-        Messages.changelogFileCreated(initialVersion, changelogFile)
+        Messages.changelogFileCreated(initialVersion, changelogFileName)
       }
     }
     return changelog

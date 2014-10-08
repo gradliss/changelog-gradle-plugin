@@ -18,30 +18,41 @@ import org.gradle.api.tasks.TaskAction
 
 abstract class ChangelogTask extends DefaultTask{
 
-  def filename = project.changelog.filename
+  def filename
   def branch
   def today = new Date()
   def changelogFile
 
   @TaskAction
   public void run() {
-    
+
     if(GitFacade.isGitInstalled()) {
-      branch = GitFacade.getFirstPartOfGitBranch()
+      branch = getBranch()
+      filename = getFilenameFromBuildfile() 
+
+      if (filename == null){
+        Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
+        filename = Constants.DEFAULT_CHANGELOG_FILENAME
+      }
+
+      changelogFile = Utility.readFileAndShowOrCreate(filename)
+    }
+  }
+  
+  private def getFilenameFromBuildfile() {
+    return project.changelog.filename
+  }
+
+  private def getBranch() {
+    def firstPartOfGitBranch = GitFacade.getFirstPartOfGitBranch()
+
+    if(firstPartOfGitBranch) {
+      return '[' + firstPartOfGitBranch + ']'
     } else {
       Messages.gitIsNotInstalled()
-      branch = "change"
     }
 
-    //Check if filename is defined in build.gradle
-    if (getFilename() == null){
-      Messages.fileNameIsNotDefined()
-      return
-    }
-
-    //Read file and show existing changelog
-    //if no changelog file exist new one would created
-    changelogFile = Utility.readFileAndShow(getFilename())
+    return ""
   }
 }
 
