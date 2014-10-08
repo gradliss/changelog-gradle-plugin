@@ -35,4 +35,9 @@ class Messages {
   def static changelogFileCreated(String initialVersion, String changelogFile) {
     println Constants.RED + " File with initial version $initialVersion was created: " + Constants.WHITE + changelogFile
   }
+  
+  def static gitIsNotInstalled() {
+    println Constants.RED + 
+      " WARNING: Git seems not to be installed at your system. Information in generated changelog may be incomplete."
+  }
 }

@@ -19,12 +19,19 @@ import org.gradle.api.tasks.TaskAction
 abstract class ChangelogTask extends DefaultTask{
 
   def filename = project.changelog.filename
-  def branch = GitFacade.getGitBranch()
+  def branch
   def today = new Date()
   def changelogFile
 
   @TaskAction
   public void run() {
+    
+    if(GitFacade.isGitInstalled()) {
+      branch = GitFacade.getFirstPartOfGitBranch()
+    } else {
+      Messages.gitIsNotInstalled()
+      branch = "change"
+    }
 
     //Check if filename is defined in build.gradle
     if (getFilename() == null){

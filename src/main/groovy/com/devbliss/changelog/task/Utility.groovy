@@ -40,10 +40,26 @@ class Utility {
   }
 
   def static getChangeFrom(today) {
-    def user = GitFacade.getGitUsername()
-    def email = GitFacade.getGitEmail()
+    def user = getUsername()
+    def email = getEmail()
     def changeFrom = "-- Last change by: $user $email $today"
     changeFrom = changeFrom.replace("\r", "").replace("\n", "")
     return changeFrom
+  }
+  
+  def private static getUsername() {
+    if(GitFacade.isGitInstalled()) {
+      return GitFacade.getGitUsername()
+    } else {
+      return System.getProperty('user.name')
+    }
+  }
+  
+  def private static getEmail() {
+    if(GitFacade.isGitInstalled()) {
+      return GitFacade.getGitEmail()
+    } else {
+      return '<unknown email address>'
+    }
   }
 }

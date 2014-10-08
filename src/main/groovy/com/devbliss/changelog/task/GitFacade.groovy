@@ -11,7 +11,14 @@ package com.devbliss.changelog.task
  */
 class GitFacade {
   
-  def static getGitBranch(){
+  def static isGitInstalled() {
+    def command = 'git version'
+    def proc = command.execute()
+    proc.waitFor()
+    return proc.in.text.startsWith('git version')
+  }
+  
+  def static getFirstPartOfGitBranch(){
     def command = "git rev-parse --abbrev-ref HEAD"
     def proc = command.execute()
     proc.waitFor()
