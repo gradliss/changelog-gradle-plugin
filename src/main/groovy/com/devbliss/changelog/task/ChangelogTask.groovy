@@ -22,37 +22,43 @@ abstract class ChangelogTask extends DefaultTask{
   def branch
   def today = new Date()
   def changelogFile
+  
+  public ChangelogTask() {
+    branch = getBranch()
+    System.err.println "########### CHANGELOG TASK branch: $branch"
+    System.err.println "########### CHANGELOG TASK branch: $branch"
+    System.err.println "########### CHANGELOG TASK branch: $branch"
+    System.err.println "########### CHANGELOG TASK branch: $branch"
+  }
 
   @TaskAction
   public void run() {
+    filename = getFilenameFromBuildfile()
 
-    if(GitFacade.isGitInstalled()) {
-      branch = getBranch()
-      filename = getFilenameFromBuildfile() 
-
-      if (filename == null){
-        Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
-        filename = Constants.DEFAULT_CHANGELOG_FILENAME
-      }
-
-      changelogFile = Utility.readFileAndShowOrCreate(filename)
+    if (filename == null){
+      Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
+      filename = Constants.DEFAULT_CHANGELOG_FILENAME
     }
+
+    changelogFile = Utility.readFileAndShowOrCreate(filename)
   }
-  
+
   private def getFilenameFromBuildfile() {
     return project.changelog.filename
   }
 
   private def getBranch() {
-    def firstPartOfGitBranch = GitFacade.getFirstPartOfGitBranch()
+    if(GitFacade.isGitInstalled()) {
+      def firstPartOfGitBranch = GitFacade.getFirstPartOfGitBranch()
 
-    if(firstPartOfGitBranch) {
-      return '[' + firstPartOfGitBranch + ']'
+      if(firstPartOfGitBranch) {
+        return '[' + firstPartOfGitBranch + ']'
+      }
     } else {
       Messages.gitIsNotInstalled()
     }
 
-    return ""
+    return "bla"
   }
 }
 
