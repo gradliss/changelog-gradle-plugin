@@ -28,7 +28,7 @@ abstract class ChangelogTask extends DefaultTask{
     branch = tryToGetBranch()
     filename = getFilenameFromBuildfile()
 
-    if (filename == null){
+    if (filename == null) {
       Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
       filename = Constants.DEFAULT_CHANGELOG_FILENAME
     }
