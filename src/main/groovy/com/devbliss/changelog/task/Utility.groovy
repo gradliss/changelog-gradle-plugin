@@ -49,7 +49,7 @@ class Utility {
   def static getChangeFrom(today) {
     def user = getUsername()
     def email = getEmail()
-    def changeFrom = "-- Last change by: $user $email $today"
+    def changeFrom = "-- Last change by: $user <$email> $today"
     changeFrom = changeFrom.replace("\r", "").replace("\n", "")
     return changeFrom
   }
@@ -66,7 +66,7 @@ class Utility {
     if(GitFacade.isGitInstalled()) {
       return GitFacade.getGitEmail()
     } else {
-      return '<unknown email address>'
+      return 'unknown email address'
     }
   }
 }
