@@ -12,8 +12,8 @@ package com.devbliss.changelog.task
  */
 class Messages {
 
-  def static fileNameIsNotDefined() {
-    println Constants.RED + " Please define a filename for changelog creation."
+  def static fileNameIsNotDefined(def defaultChangelogFilename) {
+    println Constants.RED + " No filename for changelog defined, using default: $defaultChangelogFilename"
     println " The gradle task configuration looks like:"
     println ""
     println Constants.WHITE_BOLD + " changelog {"
@@ -34,5 +34,10 @@ class Messages {
   
   def static changelogFileCreated(String initialVersion, String changelogFile) {
     println Constants.RED + " File with initial version $initialVersion was created: " + Constants.WHITE + changelogFile
+  }
+  
+  def static gitIsNotInstalled() {
+    println Constants.RED + 
+      " WARNING: Git seems not to be installed at your system. Information in generated changelog may be incomplete."
   }
 }

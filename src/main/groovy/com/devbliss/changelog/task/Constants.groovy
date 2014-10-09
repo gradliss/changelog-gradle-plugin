@@ -11,6 +11,8 @@ package com.devbliss.changelog.task
  */
 
 class Constants {
+  public static final DEFAULT_CHANGELOG_FILENAME = 'changelog.md'
+  
   //Some static color's for cmd
   public static final RED = "\033[31m"
   public static final RED_BOLD = "\033[1;31m"
@@ -26,6 +28,6 @@ class Constants {
   public static final regexVersionWithoutSuffix = /(\d)*(\.\d*).*/
   public static final regexVersionWithSuffix = /(\d)*(\.\d*)+(-).*/
   public static final regexVersionNumber = /(\d)*(\.\d*){0,2}/
-  public static final regexText = /( - \[(.*)\])(.*?).*/
+  public static final regexText = /( - )(.*?).*/
   public static final regexChangeNameDate = /\-- Last change by:(.*?)(\d+).*/
 }
