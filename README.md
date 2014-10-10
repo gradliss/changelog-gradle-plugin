@@ -37,7 +37,7 @@ The only thing you have to define in your build.gradle is the filename of your c
 
 Optional:
 
-You can define if the snapshot versions should contain a timestamp or not. By default the snapshot version has not a timestamp.
+You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
 
 ```
 changelog {
