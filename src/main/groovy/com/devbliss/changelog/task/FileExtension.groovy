@@ -9,4 +9,5 @@ package com.devbliss.changelog.task
 
 class FileExtension {
   def String filename = "changelog.md"
+  def boolean snapshotWithTimestamp = false
 }

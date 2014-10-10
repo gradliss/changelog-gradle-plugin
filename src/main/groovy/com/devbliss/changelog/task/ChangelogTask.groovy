@@ -19,6 +19,7 @@ import org.gradle.api.tasks.TaskAction
 abstract class ChangelogTask extends DefaultTask{
 
   def filename
+  def snapshotWithTimestamp
   def branch
   def today = new Date()
   def changelogFile
@@ -27,6 +28,7 @@ abstract class ChangelogTask extends DefaultTask{
   public void run() {
     branch = tryToGetBranch()
     filename = getFilenameFromBuildfile()
+    snapshotWithTimestamp = getSnapshotWithTimestampFromBuildfile()
 
     if (filename == null) {
       Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
@@ -38,6 +40,10 @@ abstract class ChangelogTask extends DefaultTask{
 
   private def getFilenameFromBuildfile() {
     return project.changelog.filename
+  }
+
+  private def getSnapshotWithTimestampFromBuildfile() {
+    return project.changelog.snapshotWithTimestamp
   }
 
   private def tryToGetBranch() {

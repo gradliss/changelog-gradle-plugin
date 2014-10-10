@@ -35,9 +35,14 @@ plugins {
 
 The only thing you have to define in your build.gradle is the filename of your changelog. At this point we only support .md extension so that the plugin can work correctly. 
 
+Optional:
+
+You can define if the snapshot versions should contain a timestamp or not. By default the snapshot version has not a timestamp.
+
 ```
 changelog {
 	filename = 'changelog.md'
+	snapshotWithTimestamp = true //default is false
 }
 
 ```
