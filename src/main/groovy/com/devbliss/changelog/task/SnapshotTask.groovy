@@ -1,6 +1,5 @@
 package com.devbliss.changelog.task
 
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -27,12 +26,17 @@ class SnapshotTask extends ChangelogTask{
     println "Add Snapshot to "+ getFilename()
     def changelogToString = changelogFile.text
     def versionLine = changelogToString.find(Constants.regexVersionWithoutSuffix)
-    def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT-")
+    def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT")
     def versionNumber = versionLine.find(Constants.regexVersionNumber)
 
     // handle version line and increment version number for a new snapshot version
     if (isAlreadySnapshotVersion) {
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
+
+      snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT")
+      if(snapshotWithTimestamp == true){
+        snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
+      }
+
     } else {
       // extract minor version number in order to increment it.
       // only works for the version number layout we use at the moment: e.g. --> 0.0.0
@@ -41,7 +45,11 @@ class SnapshotTask extends ChangelogTask{
       minor++
       def incrementedVersionNumber = major + "." + minor + ".0"
 
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
+      snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT")
+      if(snapshotWithTimestamp == true){
+        snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
+      }
+
     }
 
     println Constants.RED + " New snapshot version created" + Constants.RED_BOLD + " $snapshotVersion"
