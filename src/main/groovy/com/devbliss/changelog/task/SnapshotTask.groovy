@@ -31,12 +31,10 @@ class SnapshotTask extends ChangelogTask{
 
     // handle version line and increment version number for a new snapshot version
     if (isAlreadySnapshotVersion) {
-
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT")
-      if(snapshotWithTimestamp == true){
+      snapshotVersion = versionLine
+      if(snapshotWithTimestamp) {
         snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
       }
-
     } else {
       // extract minor version number in order to increment it.
       // only works for the version number layout we use at the moment: e.g. --> 0.0.0
@@ -46,10 +44,9 @@ class SnapshotTask extends ChangelogTask{
       def incrementedVersionNumber = major + "." + minor + ".0"
 
       snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT")
-      if(snapshotWithTimestamp == true){
+      if(snapshotWithTimestamp) {
         snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
       }
-
     }
 
     println Constants.RED + " New snapshot version created" + Constants.RED_BOLD + " $snapshotVersion"
