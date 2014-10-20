@@ -33,10 +33,10 @@ class SnapshotTask extends ChangelogTask{
       snapshotVersion = project.getRootProject().getVersion()
       def isNotASnapshotVersion = snapshotVersion.contains("-SNAPSHOT")
 
-      //Check if version in gradle.properties contains SNAPSHOT if true then go on
+      //If versionNumber in gradle.properties not contains SNAPSHOT than quit plugin
       if(!isNotASnapshotVersion){
         println Constants.RED_BOLD + "You will create a SNAPSHOT but you have defined a RELEASE version in your gradle.properties" + Constants.NEWLINE
-        println Constants.RED_BOLD + "Plugin will terminated." + Constants.RESET_COLOR_AND_STYLE
+        println Constants.RED_BOLD + "Plugin will terminate." + Constants.RESET_COLOR_AND_STYLE
         return
       }
     }else{

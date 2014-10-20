@@ -26,7 +26,7 @@ class ReleaseTask extends ChangelogTask {
       def isSnapshotVersion = releaseVersion.contains("-SNAPSHOT")
       if(isSnapshotVersion){
         println Constants.RED_BOLD + "You will create a RELEASE but you have defined a SNAPSHOT version in your gradle.properties" + Constants.NEWLINE
-        println Constants.RED_BOLD + "Plugin will terminated." + Constants.RESET_COLOR_AND_STYLE
+        println Constants.RED_BOLD + "Plugin will terminate." + Constants.RESET_COLOR_AND_STYLE
         return
       }
 

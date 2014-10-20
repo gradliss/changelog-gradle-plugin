@@ -39,7 +39,7 @@ Optional:
 
  - `snapshotWithTimestamp` You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
  
- - `readVersionFromGradleProperties` You can define if the version will be read from gradle.properties. If you set the option to true be sure you ever set the verision in the properties file correctly. By default the version will not read from the gradle.properties.
+ - `readVersionFromGradleProperties` You can define if the version will be read from gradle.properties. If you set the option to true be sure you always set the version in the properties file correctly. By default the version will not be read from the gradle.properties.
 
 ```
 changelog {
@@ -54,7 +54,7 @@ changelog {
 It is not required to add these lines **snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
 
 ### Usage
-You have two tasks which you can run via the gradle command line `gradle changelogRelease` or `gradle changelogSnapshot`
+You have two tasks which you can run via the gradle command line: `gradle changelogRelease` or `gradle changelogSnapshot`
 
 The tasks are self explained if you run changelogRelease a new release version will be written to the changelog file and if you use changelogSnapshot a new snapshot version will be written.
 
