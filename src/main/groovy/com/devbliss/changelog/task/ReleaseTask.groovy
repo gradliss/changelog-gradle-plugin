@@ -1,6 +1,5 @@
 package com.devbliss.changelog.task
 
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -19,10 +18,26 @@ class ReleaseTask extends ChangelogTask {
     super.run()
     def releaseVersion
 
-    println "Add release to " + getFilename()
-    releaseVersion = System.console().readLine Constants.RED + " Version: " + Constants.WHITE
 
-    println Constants.RED + " New release version created" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
+    if(readVersionFromGradleProperties){
+      releaseVersion = project.getRootProject().getVersion()
+
+      //Check if version in gradle.properties contains SNAPSHOT if true then quit
+      def isSnapshotVersion = releaseVersion.contains("-SNAPSHOT")
+      if(isSnapshotVersion){
+        println Constants.RED_BOLD + "You will create a RELEASE but you have defined a SNAPSHOT version in your gradle.properties" + Constants.NEWLINE
+        println Constants.RED_BOLD + "Plugin will terminated." + Constants.RESET_COLOR_AND_STYLE
+        return
+      }
+
+      println "Add release to " + getFilename()
+      println Constants.RED + " New release version created from gradle.properties" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
+    }else{
+
+      println " Add release to " + getFilename()
+      releaseVersion = System.console().readLine Constants.RED + " Version: " + Constants.WHITE
+      println Constants.RED + " New release version created" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
+    }
 
     def temp = changelogFile.text
 
@@ -33,6 +48,8 @@ class ReleaseTask extends ChangelogTask {
     changelogFile.delete()
     changelogFile = new File(getFilename())
     changelogFile << temp
+
+    println Constants.RESET_COLOR_AND_STYLE
   }
 }
 

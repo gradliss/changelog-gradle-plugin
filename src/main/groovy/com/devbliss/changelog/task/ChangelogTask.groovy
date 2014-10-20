@@ -20,6 +20,7 @@ abstract class ChangelogTask extends DefaultTask{
 
   def filename
   def snapshotWithTimestamp
+  def readVersionFromGradleProperties
   def branch
   def today = new Date()
   def changelogFile
@@ -29,6 +30,7 @@ abstract class ChangelogTask extends DefaultTask{
     branch = tryToGetBranch()
     filename = getFilenameFromBuildfile()
     snapshotWithTimestamp = getSnapshotWithTimestampFromBuildfile()
+    readVersionFromGradleProperties = getReadVersionFromGradleProperties()
 
     if (filename == null) {
       Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
@@ -45,6 +47,12 @@ abstract class ChangelogTask extends DefaultTask{
   private def getSnapshotWithTimestampFromBuildfile() {
     return project.changelog.snapshotWithTimestamp
   }
+
+  public def getReadVersionFromGradleProperties() {
+    return project.changelog.readVersionFromGradleProperties;
+  }
+
+
 
   private def tryToGetBranch() {
     if(GitFacade.isGitInstalled()) {
