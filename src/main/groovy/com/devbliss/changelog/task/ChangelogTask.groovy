@@ -48,7 +48,7 @@ abstract class ChangelogTask extends DefaultTask{
     return project.changelog.snapshotWithTimestamp
   }
 
-  public def getReadVersionFromGradleProperties() {
+  private def getReadVersionFromGradleProperties() {
     return project.changelog.readVersionFromGradleProperties;
   }
 
