@@ -35,20 +35,26 @@ plugins {
 
 The only thing you have to define in your build.gradle is the filename of your changelog. At this point we only support .md extension so that the plugin can work correctly. 
 
-Optional:
+**Optional:**
 
-You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
+ - `snapshotWithTimestamp` You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
+ 
+ - `readVersionFromGradleProperties` You can define if the version will be read from gradle.properties. If you set the option to true be sure you always set the version in the properties file correctly. Using this option in case of changelogSnapshotTask to ensure that "-SNAPSHOT" is appended to the version property in your gradle.properties E.g. version=0.1.0-SNAPSHOT. By default the version will not be read from the gradle.properties.
 
 ```
 changelog {
 	filename = 'changelog.md'
 	snapshotWithTimestamp = true //default is false
+	readVersionFromGradleProperties = true //default is false
 }
 
 ```
+**Note**
+
+It is not required to add these lines **snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
 
 ### Usage
-You have two tasks which you can run via the gradle command line **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
+You have two tasks which you can run via the gradle command line: `gradle changelogRelease` or `gradle changelogSnapshot`
 
 The tasks are self explained if you run changelogRelease a new release version will be written to the changelog file and if you use changelogSnapshot a new snapshot version will be written.
 
@@ -87,5 +93,13 @@ buildscript {
 
 After the defeniton of the task you can run **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
 and the command line will guide you to write the changelog.
+
+
+### Requirements
+
+Java SE Runtime Environment 8
+
+Gradle 2.1
+
 
 
