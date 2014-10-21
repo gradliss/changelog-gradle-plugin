@@ -49,7 +49,7 @@ changelog {
 }
 
 ```
-**Note**
+**Note:**
 
 It is not required to add these lines **snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
 
