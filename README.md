@@ -33,9 +33,11 @@ plugins {
 ```
 ### Configuration
 
-The only thing you have to define in your build.gradle is the filename of your changelog. At this point we only support .md extension so that the plugin can work correctly. 
+If you want to use this plugin you have nothing to configure. All options are optinal.
 
 **Optional:**
+
+- `filename` You can set the filename for your changelog file. Default filename is "changelog.md".
 
  - `snapshotWithTimestamp` You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
  
@@ -43,15 +45,15 @@ The only thing you have to define in your build.gradle is the filename of your c
 
 ```
 changelog {
-	filename = 'changelog.md'
-	snapshotWithTimestamp = true //default is false
-	readVersionFromGradleProperties = true //default is false
+	filename = 'myChangelogFile.md'				//default is changelog.md
+	snapshotWithTimestamp = true				//default is false
+	readVersionFromGradleProperties = true		//default is false
 }
 
 ```
 **Note:**
 
-It is not required to add these lines **snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
+It is not required to add these lines **filename, snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
 
 ### Usage
 You have two tasks which you can run via the gradle command line: 
@@ -101,7 +103,7 @@ buildscript {
 }
 ```
 
-After the defeniton of the task you can run **`gradle changelogRelease`** or **`gradle changelogSnapshot`**
+After the defeniton of the task you can run **gradle changelogRelease** or **gradle changelogSnapshot**
 and the command line will guide you to write the changelog.
 
 
@@ -111,5 +113,6 @@ Java SE Runtime Environment 8
 
 Gradle 2.1
 
+Plugin only support Markdown file extension
 
 
