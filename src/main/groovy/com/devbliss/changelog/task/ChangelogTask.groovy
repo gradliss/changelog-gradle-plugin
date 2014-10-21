@@ -37,7 +37,7 @@ abstract class ChangelogTask extends DefaultTask{
       filename = Constants.DEFAULT_CHANGELOG_FILENAME
     }
 
-    changelogFile = Utility.readFileAndShowOrCreate(filename)
+    changelogFile = Utility.readFileAndShowOrCreate(filename, snapshotWithTimestamp)
   }
 
   private def getFilenameFromBuildfile() {

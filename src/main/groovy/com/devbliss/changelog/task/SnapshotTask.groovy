@@ -59,6 +59,8 @@ class SnapshotTask extends ChangelogTask{
           snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
         }
       }
+
+      Utility.writeVersionToGradleProperties(snapshotVersion)
     }
 
     println " Add Snapshot to "+ getFilename()

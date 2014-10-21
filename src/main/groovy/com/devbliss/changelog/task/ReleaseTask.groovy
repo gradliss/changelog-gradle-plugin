@@ -18,7 +18,6 @@ class ReleaseTask extends ChangelogTask {
     super.run()
     def releaseVersion
 
-
     if(readVersionFromGradleProperties){
       releaseVersion = project.getRootProject().getVersion()
 
@@ -37,6 +36,8 @@ class ReleaseTask extends ChangelogTask {
       println " Add release to " + getFilename()
       releaseVersion = System.console().readLine Constants.RED + " Version: " + Constants.WHITE
       println Constants.RED + " New release version created" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
+
+      Utility.writeVersionToGradleProperties(releaseVersion)
     }
 
     def temp = changelogFile.text
