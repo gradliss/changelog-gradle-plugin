@@ -60,12 +60,10 @@ You have two tasks which you can run via the gradle command line:
 
 ```
 gradle changelogRelease
-
 ```
 
 ```
 gradle changelogSnapshot
-
 ```
 
 The tasks are self explained if you run changelogRelease a new release version will be written to the changelog file and if you use changelogSnapshot a new snapshot version will be written.
