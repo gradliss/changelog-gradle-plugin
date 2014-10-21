@@ -95,3 +95,11 @@ After the defeniton of the task you can run **`gradle changelogRelease`** or **`
 and the command line will guide you to write the changelog.
 
 
+### Requirements
+
+Java SE Runtime Environment 8
+
+Gradle 2.1
+
+
+
