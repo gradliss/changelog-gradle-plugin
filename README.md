@@ -20,7 +20,6 @@ buildscript {
 }
 
 apply plugin: "com.devbliss.changelog"
-
 ```
 
 Build script snippet for new, incubating, plugin mechanism introduced in Gradle 2.1:
@@ -29,7 +28,6 @@ Build script snippet for new, incubating, plugin mechanism introduced in Gradle 
 plugins {
   id "com.devbliss.changelog" version "1.2.0"
 }
-
 ```
 ### Configuration
 
@@ -49,7 +47,6 @@ changelog {
 	snapshotWithTimestamp = true				//default is false
 	readVersionFromGradleProperties = true		//default is false
 }
-
 ```
 **Note:**
 
