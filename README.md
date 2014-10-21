@@ -15,7 +15,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath "com.devbliss.changelog:changelog-gradle-plugin:1.0.0"
+    classpath "com.devbliss.changelog:changelog-gradle-plugin:1.2.0"
   }
 }
 
@@ -27,7 +27,7 @@ Build script snippet for new, incubating, plugin mechanism introduced in Gradle 
 
 ```
 plugins {
-  id "com.devbliss.changelog" version "1.0.0"
+  id "com.devbliss.changelog" version "1.2.0"
 }
 
 ```
@@ -54,11 +54,21 @@ changelog {
 It is not required to add these lines **snapshotWithTimestamp, readVersionFromGradleProperties** to the build.gradle file. The plugin set this automaticaly to false if you dont want to use this.
 
 ### Usage
-You have two tasks which you can run via the gradle command line: `gradle changelogRelease` or `gradle changelogSnapshot`
+You have two tasks which you can run via the gradle command line: 
+
+```
+gradle changelogRelease
+
+```
+
+```
+gradle changelogSnapshot
+
+```
 
 The tasks are self explained if you run changelogRelease a new release version will be written to the changelog file and if you use changelogSnapshot a new snapshot version will be written.
 
-### Local usage
+### Local usage with this Repository
 
 First u have to install a gradle wrapper with:
 
@@ -76,7 +86,7 @@ Now it is installed to your maven repo.
 To use this plugin you have to use this snippet.
 
 ```
-apply plugin: 'changelog'
+apply plugin: 'com.devbliss.changelog'
 
 changelog {
   filename = 'changelog.md'
@@ -86,7 +96,7 @@ buildscript {
   repositories {
     mavenLocal()
   }
-  dependencies { classpath "com.devbliss.changelog:changelog-gradle-plugin:0.1.0")
+  dependencies { classpath "com.devbliss.changelog:changelog-gradle-plugin:1.2.0")
   }
 }
 ```
