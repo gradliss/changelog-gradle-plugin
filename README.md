@@ -39,9 +39,9 @@ If you want to use this plugin you have nothing to configure. All options are op
 
 - `filename` You can set the filename for your changelog file. Default filename is "changelog.md".
 
- - `snapshotWithTimestamp` You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
+- `snapshotWithTimestamp` You can define whether or not the snapshot version string contains a timestamp. By default the snapshot version does not contain a timestamp.
  
- - `readVersionFromGradleProperties` You can define if the version will be read from gradle.properties. If you set the option to true be sure you always set the version in the properties file correctly. Using this option in case of changelogSnapshotTask to ensure that "-SNAPSHOT" is appended to the version property in your gradle.properties E.g. version=0.1.0-SNAPSHOT. By default the version will not be read from the gradle.properties.
+- `readVersionFromGradleProperties` You can define if the version will be read from gradle.properties. If you set the option to true be sure you always set the version in the properties file correctly. Using this option in case of changelogSnapshotTask to ensure that "-SNAPSHOT" is appended to the version property in your gradle.properties E.g. version=0.1.0-SNAPSHOT. By default the version will not be read from the gradle.properties.
 
 ```
 changelog {
