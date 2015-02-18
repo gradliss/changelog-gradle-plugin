@@ -104,7 +104,7 @@ and the command line will guide you to write the changelog.
 
 ### Requirements
 
-Java SE Runtime Environment 8
+Java SE Runtime Environment 7
 
 Gradle 2.1
 
