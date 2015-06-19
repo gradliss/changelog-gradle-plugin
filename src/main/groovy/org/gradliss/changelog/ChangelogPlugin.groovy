@@ -1,8 +1,8 @@
-package com.devbliss.changelog
+package org.gradliss.changelog
 
-import com.devbliss.changelog.task.ReleaseTask
-import com.devbliss.changelog.task.SnapshotTask
-import com.devbliss.changelog.task.TaskConfigExtension
+import org.gradliss.changelog.task.ReleaseTask
+import org.gradliss.changelog.task.SnapshotTask
+import org.gradliss.changelog.task.TaskConfigExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

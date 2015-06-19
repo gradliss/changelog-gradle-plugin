@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 /**
  * The Utility class gives the plugin some static variables to make the code more readable.
