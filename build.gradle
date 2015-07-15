@@ -1,7 +1,17 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+}
+
+plugins {
+  id "com.jfrog.bintray" version "1.2"
+}
+
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
 apply plugin: 'maven'
-apply plugin: "com.jfrog.bintray"
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.7'
@@ -25,20 +35,6 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) { gradleVersion = 2.5  }
-
-/**
- * Bintray settings
- * */
-buildscript {
-  repositories {
-    mavenLocal()
-    jcenter()
-  }
-  dependencies {
-    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$infoExtractorVersion"
-  }
-}
 
 ext {
   project_website = "https://github.com/{$orgId}/${projectId}"
@@ -98,12 +94,12 @@ bintray {
   user = bintrayUser
   key = bintrayKey
 
-  publications = ['mavenJava']
+  configurations = ['archives']
 
   dryRun = false //Whether to run this as dry-run, without deploying
   publish = false //If version should be auto published after an upload
   pkg {
-    repo = 'gradle-plugins'
+    repo = 'gradle-plugin-repository'
     userOrg = orgId
     name = 'changelog-gradle-plugin'
     desc = 'Gradle changelog plugin. A plugin for the gradle build system to write changelogs painlessly.'
@@ -123,9 +119,9 @@ bintray {
     version {
       name = project.version
       userOrg = orgId
+      vcsUrl = "https://github.com//{$orgId}/${projectId}.git"
       vcsTag = project.version
-      attributes = ['gradle-plugin': 'com.devbliss.changelog:com.devbliss.changelog:changelog-gradle-plugin']
+      attributes = ['gradle-plugin': 'org.gradliss.changelog:org.gradliss.changelog:changelog-gradle-plugin']
     }
   }
 }
-
