@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 /**
  * Encapsulates information provided by GIT in some static utility methods. 

@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 import org.gradle.api.tasks.TaskAction
 
@@ -23,32 +23,47 @@ class SnapshotTask extends ChangelogTask{
     super.run()
     def snapshotVersion
 
-    println "Add Snapshot to "+ getFilename()
+
     def changelogToString = changelogFile.text
     def versionLine = changelogToString.find(Constants.regexVersionWithoutSuffix)
     def isAlreadySnapshotVersion = versionLine.contains("-SNAPSHOT")
     def versionNumber = versionLine.find(Constants.regexVersionNumber)
 
-    // handle version line and increment version number for a new snapshot version
-    if (isAlreadySnapshotVersion) {
-      snapshotVersion = versionLine
-      if(snapshotWithTimestamp) {
-        snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
-      }
-    } else {
-      // extract minor version number in order to increment it.
-      // only works for the version number layout we use at the moment: e.g. --> 0.0.0
-      def major = versionNumber.subSequence(0, 1)
-      def minor = versionNumber.subSequence(2, 3) as int
-      minor++
-      def incrementedVersionNumber = major + "." + minor + ".0"
+    if(readVersionFromGradleProperties){
+      snapshotVersion = project.getRootProject().getVersion()
+      def isSnapshotVersion = snapshotVersion.contains("-SNAPSHOT")
 
-      snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT")
-      if(snapshotWithTimestamp) {
-        snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
+      //If versionNumber in gradle.properties not contains SNAPSHOT than quit plugin
+      if(!isSnapshotVersion){
+        println Constants.RED_BOLD + "You will create a SNAPSHOT but you have defined a RELEASE version in your gradle.properties" + Constants.NEWLINE
+        println Constants.RED_BOLD + "Plugin will terminate." + Constants.RESET_COLOR_AND_STYLE
+        return
       }
+    }else{
+      // handle version line and increment version number for a new snapshot version
+      if (isAlreadySnapshotVersion) {
+        snapshotVersion = versionLine
+        if(snapshotWithTimestamp) {
+          snapshotVersion = versionLine.replaceFirst(versionLine, "$versionNumber-SNAPSHOT-" + today.time)
+        }
+      } else {
+        // extract minor version number in order to increment it.
+        // only works for the version number layout we use at the moment: e.g. --> 0.0.0
+        def major = versionNumber.subSequence(0, 1)
+        def minor = versionNumber.subSequence(2, 3) as int
+        minor++
+        def incrementedVersionNumber = major + "." + minor + ".0"
+
+        snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT")
+        if(snapshotWithTimestamp) {
+          snapshotVersion = versionLine.replaceFirst(versionLine, "$incrementedVersionNumber-SNAPSHOT-" + today.time)
+        }
+      }
+
+      Utility.writeVersionToGradleProperties(snapshotVersion)
     }
 
+    println " Add Snapshot to "+ getFilename()
     println Constants.RED + " New snapshot version created" + Constants.RED_BOLD + " $snapshotVersion"
 
     def change = System.console().readLine Constants.RED + " Change:" + Constants.WHITE + " $branch "
@@ -71,6 +86,8 @@ class SnapshotTask extends ChangelogTask{
       changelogFile << Constants.NEWLINE + Utility.getChangeFrom(today) + Constants.NEWLINE + Constants.NEWLINE
       changelogFile << temp
     }
+
+    println Constants.RESET_COLOR_AND_STYLE
   }
 }
 

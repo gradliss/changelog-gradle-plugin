@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
@@ -20,6 +20,7 @@ abstract class ChangelogTask extends DefaultTask{
 
   def filename
   def snapshotWithTimestamp
+  def readVersionFromGradleProperties
   def branch
   def today = new Date()
   def changelogFile
@@ -29,13 +30,14 @@ abstract class ChangelogTask extends DefaultTask{
     branch = tryToGetBranch()
     filename = getFilenameFromBuildfile()
     snapshotWithTimestamp = getSnapshotWithTimestampFromBuildfile()
+    readVersionFromGradleProperties = getReadVersionFromGradlePropertiesFromBuildFile()
 
     if (filename == null) {
       Messages.fileNameIsNotDefined(Constants.DEFAULT_CHANGELOG_FILENAME)
       filename = Constants.DEFAULT_CHANGELOG_FILENAME
     }
 
-    changelogFile = Utility.readFileAndShowOrCreate(filename)
+    changelogFile = Utility.readFileAndShowOrCreate(filename, snapshotWithTimestamp)
   }
 
   private def getFilenameFromBuildfile() {
@@ -45,6 +47,12 @@ abstract class ChangelogTask extends DefaultTask{
   private def getSnapshotWithTimestampFromBuildfile() {
     return project.changelog.snapshotWithTimestamp
   }
+
+  private def getReadVersionFromGradlePropertiesFromBuildFile() {
+    return project.changelog.readVersionFromGradleProperties
+  }
+
+
 
   private def tryToGetBranch() {
     if(GitFacade.isGitInstalled()) {

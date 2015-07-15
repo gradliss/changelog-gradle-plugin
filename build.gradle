@@ -1,9 +1,10 @@
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 apply plugin: "com.jfrog.bintray"
 
 sourceCompatibility = '1.8'
+targetCompatibility = '1.7'
 
 group = project.group
 version = project.version
@@ -15,6 +16,7 @@ repositories {
 }
 
 dependencies {
+  compile 'commons-configuration:commons-configuration:1.10'
   compile gradleApi()
   compile "org.codehaus.groovy:groovy-all:$groovyVersion"
   testCompile "org.spockframework:spock-maven:$spockVersion"
@@ -87,22 +89,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
   from 'build/docs/javadoc'
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      from components.java
-      artifact sourcesJar
-      artifact javadocJar
-
-      pom.withXml {
-        def root = asNode()
-        root.appendNode('description', 'A Gradle Plugin to write changelogs.')
-        root.children().last() + pomConfig
-      }
-    }
-  }
-}
-
 bintray {
   user = bintrayUser
   key = bintrayKey
@@ -138,5 +124,5 @@ bintray {
   }
 }
 
-task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << { logger.info "Installing $project.name" }
+//task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << { logger.info "Installing $project.name" }
 
