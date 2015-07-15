@@ -24,7 +24,7 @@ dependencies {
   testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
 }
 
-task wrapper(type: Wrapper) { gradleVersion = 2.1  }
+task wrapper(type: Wrapper) { gradleVersion = 2.5  }
 
 /**
  * Bintray settings
@@ -76,6 +76,11 @@ def pomConfig = {
       name "Henning Schütz"
       email "henning.schuetz@devbliss.com"
     }
+    developer {
+      id "hillkorn"
+      name "Dennis Schumann"
+      email "hillkorn@gmail.com"
+    }
   }
 }
 
@@ -123,6 +128,4 @@ bintray {
     }
   }
 }
-
-//task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << { logger.info "Installing $project.name" }
 
