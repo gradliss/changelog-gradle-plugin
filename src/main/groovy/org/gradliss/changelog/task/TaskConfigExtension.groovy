@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 /**
  * @author Christian Soth <christian.soth@devbliss.com>

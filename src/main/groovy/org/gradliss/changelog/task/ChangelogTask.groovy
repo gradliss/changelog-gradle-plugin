@@ -1,4 +1,4 @@
-package com.devbliss.changelog.task
+package org.gradliss.changelog.task
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction

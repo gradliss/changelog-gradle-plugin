@@ -1,9 +1,19 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+  }
+}
+
+plugins {
+  id "com.jfrog.bintray" version "1.2"
+}
+
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-apply plugin: "com.jfrog.bintray"
+apply plugin: 'maven'
 
-sourceCompatibility = '1.7'
+sourceCompatibility = '1.8'
 targetCompatibility = '1.7'
 
 group = project.group
@@ -24,20 +34,6 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) { gradleVersion = 2.1  }
-
-/**
- * Bintray settings
- * */
-buildscript {
-  repositories {
-    mavenLocal()
-    jcenter()
-  }
-  dependencies {
-    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayVersion"
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$infoExtractorVersion"
-  }
-}
 
 ext {
   project_website = "https://github.com/{$orgId}/${projectId}"
@@ -88,32 +84,16 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
   from 'build/docs/javadoc'
 }
 
-publishing {
-  publications {
-    mavenJava(MavenPublication) {
-      from components.java
-      artifact sourcesJar
-      artifact javadocJar
-
-      pom.withXml {
-        def root = asNode()
-        root.appendNode('description', 'A Gradle Plugin to write changelogs.')
-        root.children().last() + pomConfig
-      }
-    }
-  }
-}
-
 bintray {
   user = bintrayUser
   key = bintrayKey
 
-  publications = ['mavenJava']
+  configurations = ['archives']
 
   dryRun = false //Whether to run this as dry-run, without deploying
   publish = false //If version should be auto published after an upload
   pkg {
-    repo = 'gradle-plugins'
+    repo = 'gradle-plugin-repository'
     userOrg = orgId
     name = 'changelog-gradle-plugin'
     desc = 'Gradle changelog plugin. A plugin for the gradle build system to write changelogs painlessly.'
@@ -133,11 +113,9 @@ bintray {
     version {
       name = project.version
       userOrg = orgId
+      vcsUrl = "https://github.com//{$orgId}/${projectId}.git"
       vcsTag = project.version
-      attributes = ['gradle-plugin': 'com.devbliss.changelog:com.devbliss.changelog:changelog-gradle-plugin']
+      attributes = ['gradle-plugin': 'org.gradliss.changelog:org.gradliss.changelog:changelog-gradle-plugin']
     }
   }
 }
-
-task install(dependsOn: 'publishMavenJavaPublicationToMavenLocal') << { logger.info "Installing $project.name" }
-
