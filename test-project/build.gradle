@@ -1,0 +1,12 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenLocal()
+  }
+
+  dependencies {
+    classpath "org.gradliss.changelog:changelog-gradle-plugin:2.0.0"
+  }
+}
+
+apply plugin: "org.gradliss.changelog"
