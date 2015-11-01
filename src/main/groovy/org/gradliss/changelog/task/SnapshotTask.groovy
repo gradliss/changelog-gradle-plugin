@@ -66,7 +66,7 @@ class SnapshotTask extends ChangelogTask{
     println " Add Snapshot to "+ getFilename()
     println Constants.RED + " New snapshot version created" + Constants.RED_BOLD + " $snapshotVersion"
 
-    def change = System.console().readLine Constants.RED + " Change:" + Constants.WHITE + " $branch "
+    def change = readChange(branch)
 
     def temp = changelogFile.text
     if (isAlreadySnapshotVersion) {
@@ -88,6 +88,17 @@ class SnapshotTask extends ChangelogTask{
     }
 
     println Constants.RESET_COLOR_AND_STYLE
+  }
+
+  private String readChange(String branch) {
+    if (System.properties.'sun.java.command'.contains('launcher.daemon')) {
+      print Constants.RED + " Change:" + Constants.WHITE + " $branch "
+      System.out.flush()
+      return new InputStreamReader(System.in).readLine()
+
+    } else {
+      return System.console().readLine(Constants.RED + " Change:" + Constants.WHITE + " $branch ")
+    }
   }
 }
 

@@ -34,7 +34,7 @@ class ReleaseTask extends ChangelogTask {
     }else{
 
       println " Add release to " + getFilename()
-      releaseVersion = System.console().readLine Constants.RED + " Version: " + Constants.WHITE
+      releaseVersion = readVersion()
       println Constants.RED + " New release version created" + Constants.RED_BOLD + " $releaseVersion" + Constants.WHITE
 
       Utility.writeVersionToGradleProperties(releaseVersion)
@@ -51,6 +51,16 @@ class ReleaseTask extends ChangelogTask {
     changelogFile << temp
 
     println Constants.RESET_COLOR_AND_STYLE
+  }
+
+  private String readVersion() {
+    if (System.properties.'sun.java.command'.contains('launcher.daemon')) {
+      print Constants.RED + " Version: " + Constants.WHITE
+      System.out.flush()
+      return new InputStreamReader(System.in).readLine()
+    } else {
+      return System.console().readLine(Constants.RED + " Version: " + Constants.WHITE)
+    }
   }
 }
 
